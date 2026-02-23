@@ -1,9 +1,9 @@
-Day 01 – Project Initialization & Base Structure
- Objective
+📅 Day 01 – Project Initialization & Base Structure
+🎯 Objective
 
 Initialize the CareCentro project with a modern and scalable Next.js architecture.
 
- Work Completed
+🛠 Work Completed
 
 Installed Node.js and configured development environment
 
@@ -27,7 +27,7 @@ Implemented dashboard layout with sidebar
 
 Connected and pushed project to GitHub
 
- Key Learnings
+🧠 Key Learnings
 
 Understanding of Next.js App Router structure
 
@@ -41,7 +41,7 @@ Layout nesting in Next.js
 
 Initial Git workflow for project versioning
 
- Architecture Decisions
+🧩 Architecture Decisions
 
 Use App Router for scalability
 

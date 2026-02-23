@@ -1,57 +1,56 @@
-Day 01 – Project Initialization & Base Structure
- Objective
+📅 Day 02 – Props & Reusable Components
+🎯 Objective
 
-Initialize the CareCentro project with a modern and scalable Next.js architecture.
+Create a reusable metric component and remove hardcoded values from the dashboard.
 
- Work Completed
+🛠 Work Completed
 
-Installed Node.js and configured development environment
+Created /components folder
 
-Resolved PowerShell ExecutionPolicy issue
+Built MetricCard.tsx
 
-Created project using create-next-app
+Defined MetricCardProps using TypeScript
 
-Configured with:
+Implemented props destructuring
 
-TypeScript
+Applied Tailwind styling for visual structure
 
-Tailwind CSS
+Fixed layout and rendering issues
 
-App Router
+Converted hardcoded values into variables
 
-Customized initial homepage
+Improved dashboard grid alignment
 
-Created /dashboard route
+Added semantic commenting
 
-Implemented dashboard layout with sidebar
+🧠 Key Learnings
 
-Connected and pushed project to GitHub
+Understanding React props
 
- Key Learnings
+Difference between string literals and JS expressions in JSX
 
-Understanding of Next.js App Router structure
+Using {} in JSX
 
-Difference between page.tsx and layout.tsx
+Conditional rendering with ternary operator
 
-Folder-based routing system
+Importance of separation of responsibilities
 
-Basic Tailwind styling
+Component reusability patterns
 
-Layout nesting in Next.js
+Clean project structure practices
 
-Initial Git workflow for project versioning
+🧩 Architecture Decisions
 
- Architecture Decisions
+Centralize reusable UI components in /components
 
-Use App Router for scalability
+Avoid hardcoded values in JSX
 
-Separate layout logic from page logic
+Keep dashboard logic clean and scalable
 
-Prepare structure for modular SaaS growth
-
-Maintain clean root-level organization
+Prepare foundation for state management (useState)
 
 💡 Reflections
 
-Reactivated foundational knowledge of React and modern frontend architecture.
-Encountered and resolved real environment configuration issues.
+Faced temporary frustration due to memory gaps in React syntax.
+Recovered quickly by reasoning through logic instead of copying.
+Confirmed conceptual understanding is returning through structured practice.
