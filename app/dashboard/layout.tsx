@@ -1,6 +1,7 @@
 // Layout específico del módulo Dashboard.
 // Este layout envuelve todas las rutas dentro de /dashboard
 // y define la estructura base con sidebar + contenido dinámico.
+import Link from "next/link";
 export default function DashboardLayout({
   children,
 }: {
@@ -20,10 +21,18 @@ export default function DashboardLayout({
 
         {/* Navegación principal del dashboard */}
         <nav className="space-y-4">
-          <p>Dashboard</p>
-          <p>Residentes</p>
-          <p>Medicaciones</p>
-          <p>Pagos</p>
+          <Link href="/dashboard" className="block p-2 rounded hover:bg-blue-500" >
+          Dashboard
+          </Link>
+          <Link href="/dashboard/residentes" className="block p-2 rounded hover:bg-blue-500">
+          Residentes
+          </Link>
+          <Link href="/dashboard/medicaciones" className="block p-2 rounded hover:bg-blue-500" >
+          Medicaciones
+          </Link>
+          <Link href="/dashboard/pagos" className="block p-2 rounded hover:bg-blue-500">
+          Pagos
+          </Link>
         </nav>
 
       </aside>
