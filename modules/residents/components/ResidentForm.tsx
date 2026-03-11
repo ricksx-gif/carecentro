@@ -3,10 +3,12 @@
 import { useState } from "react"
 import { insertResidentTest } from "../services/residents.service"
 
-export default function ResidentForm() {
+
+export default function ResidentForm({ fetchResidents }: any) {
 
   const [name, setName] = useState("")
   const [birthDate, setBirthDate] = useState("")
+
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -22,10 +24,10 @@ export default function ResidentForm() {
         birth_date: birthDate
       })
 
+      await fetchResidents()
+
       setName("")
       setBirthDate("")
-
-      window.location.reload()
 
     } catch (error) {
       console.error(error)

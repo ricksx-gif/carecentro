@@ -2,13 +2,15 @@
 
 import { useResidents } from "../hooks/useResidents"
 import ResidentForm from "./ResidentForm"
+import ResidentsTable from "./ResidentsTable"
+
 
 export default function ResidentsHeader() {
-    const { residents } = useResidents ()
 
-
+    const { residents, fetchResidents } = useResidents()
 
     return (
+
     <div>
       <h1 className="text-2xl font-bold text-black">
         Módulo de Residentes
@@ -18,7 +20,9 @@ export default function ResidentsHeader() {
        Total residentes: {residents.length}
       </p>
 
-      <ResidentForm />
+      <ResidentForm fetchResidents={fetchResidents} />
+
+      <ResidentsTable residents={residents} />
 
     </div>
   )
