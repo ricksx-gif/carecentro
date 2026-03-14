@@ -22,3 +22,16 @@ export async function insertResidentTest(resident: {
 
   return data
 }
+
+export async function deleteResident(residentId: string) {
+  const { error } = await supabase
+    .from("residents")
+    .delete()
+    .eq("id", residentId)
+
+  if (error) {
+    console.error("Error eliminar residente:", error)
+    throw error
+  }
+  
+}

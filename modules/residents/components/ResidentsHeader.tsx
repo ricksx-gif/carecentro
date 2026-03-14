@@ -22,7 +22,10 @@ export default function ResidentsHeader() {
 
       <ResidentForm fetchResidents={fetchResidents} />
 
-      <ResidentsTable residents={residents} />
+      <ResidentsTable 
+        residents={residents}
+        fetchResidents={fetchResidents}
+      />
 
     </div>
   )
