@@ -1,12 +1,44 @@
+"use client"
+
+import { useEffect } from "react"
+import MedicationForm from "@/modules/medications/components/MedicationForm"
+import MedicationsList from "@/modules/medications/components/MedicationsList"
+import { useMedications } from "@/modules/medications/hooks/useMedications"
+
 export default function MedicacionesPage() {
+
+  const residentId = "30402c06-1bdf-4d6c-b97a-a0d5a32cad19"
+
+  const {
+    medications,
+    fetchMedications,
+    createMedication,
+    removeMedication
+  } = useMedications()
+
+  useEffect(() => {
+    fetchMedications(residentId)
+  }, [residentId])
+
   return (
-    <div>
+    <div className="space-y-6">
+
       <h1 className="text-2xl font-bold text-black">
-        Módulo de Medicaciones
-        </h1>
-      <p className="mt-4 text-gray-600">
-        Aquí gestionaremos las medicaciones.
-        </p>
+        Medicaciones
+      </h1>
+
+      <MedicationForm
+        residentId={residentId}
+        createMedication={createMedication}
+      />
+
+      <MedicationsList
+        residentId={residentId}
+        medications={medications}
+        fetchMedications={fetchMedications}
+        removeMedication={removeMedication}
+      />
+
     </div>
   )
 }

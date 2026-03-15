@@ -10,6 +10,7 @@ type Resident = {
 export default function ResidentsTable({
   residents,
   fetchResidents,
+  onEdit,
 }: any) {
 
   async function handleDelete(residentId: string) {
@@ -45,10 +46,17 @@ export default function ResidentsTable({
             {resident.birth_date}
           </td>
 
-          <td className="p-2 border border-gray-600">
+          <td className="p-2 border border-gray-600 flex gap-2">
+            <button
+              onClick={() => onEdit(resident)}
+              className="px-2 py-1 text-blue-600 border border-blue-600 rounded"
+              >
+                Editar
+              </button>
+
             <button
               onClick={() => handleDelete(resident.id)}
-              className="text-red-600 font-semibold"
+              className="px-2 py-1 text-red-600 border borde-red-600 rounded"
             >
               Eliminar
             </button>

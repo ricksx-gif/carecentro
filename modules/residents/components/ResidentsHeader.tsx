@@ -20,13 +20,6 @@ export default function ResidentsHeader() {
        Total residentes: {residents.length}
       </p>
 
-      <ResidentForm fetchResidents={fetchResidents} />
-
-      <ResidentsTable 
-        residents={residents}
-        fetchResidents={fetchResidents}
-      />
-
     </div>
   )
 }

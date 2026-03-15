@@ -33,5 +33,27 @@ export async function deleteResident(residentId: string) {
     console.error("Error eliminar residente:", error)
     throw error
   }
-  
 }
+  
+  export async function updateResident(residentId: string,
+    resident:{
+      name: string
+      birth_date: string
+    }
+  ) {
+    const { data, error } = await supabase
+       .from("residents")
+       .update({
+         name: resident.name,
+         birth_date: resident.birth_date
+       })
+        .eq("id", residentId)
+        .select()
+
+    if (error) {
+       console.error("Error actualizando residente:", error)
+       throw error
+    }
+
+    return data
+  }
