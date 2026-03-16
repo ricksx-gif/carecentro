@@ -87,7 +87,7 @@ export default function ResidentForm({ resident, fetchResidents, clearSelectedRe
           setBirthDate("")
           clearSelectedResident()
         }}
-        className=" bg-green-600 ml-3 px-4 py-2 text-white rounded"
+        className="bg-gray-600 text-white px-4 py-2 rounded ml-3"
         >
           Cancelar
         </button>

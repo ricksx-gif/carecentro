@@ -3,9 +3,12 @@ import { Medication } from "../types/medication.type"
 import {
   insertMedication,
   getMedicationsByResident,
-  deleteMedication
+  deleteMedication,
+  updateMedication,
 } from "../services/medications.service"
 
+// Hook del módulo `medications`.
+// Maneja estado y expone operaciones para la UI (consultar, crear, editar y eliminar).
 export function useMedications() {
   const [medications, setMedications] = useState<Medication[]>([])
 
@@ -27,6 +30,19 @@ export function useMedications() {
     }
   }
 
+  async function editMedication(
+    medicationId: string,
+    residentId: string,
+    medication: Pick<Medication, "name" | "dose" | "schedule">
+  ) {
+    try {
+      await updateMedication(medicationId, medication)
+      await fetchMedications(residentId)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   async function removeMedication(medicationId: string, residentId: string) {
     try {
       await deleteMedication(medicationId)
@@ -40,6 +56,7 @@ export function useMedications() {
     medications,
     fetchMedications,
     createMedication,
+    editMedication,
     removeMedication
   }
 }

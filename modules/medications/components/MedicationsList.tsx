@@ -1,20 +1,25 @@
 "use client"
 
 import { useEffect } from "react"
+import { Medication } from "../types/medication.type"
 
 
 type MedicationsListProps = {
     residentId: string
-    medications: any[]
+    medications: Medication[]
     fetchMedications: (residentId: string) => void
     removeMedication: (medicationId: string, residentId: string) => void   
+    onEdit: (medication: Medication) => void
 }
 
+// Lista del módulo `medications`.
+// Muestra medicaciones por residente y permite seleccionar una para edición o eliminarla.
 export default function MedicationsList({
   residentId,
   medications,
   fetchMedications,
-  removeMedication
+  removeMedication,
+  onEdit
 }: MedicationsListProps) {
 
     console.log("medications:", medications)
@@ -58,12 +63,18 @@ export default function MedicationsList({
 
                           <td className="p-2 border border-gray-600">
                             <button
+                              onClick={() => onEdit(med)}
+                              className="px-2 py-1 text-blue-600 border border-blue-600 rounded mr-2"
+                            >
+                              Editar
+                            </button>
+                            <button
                             onClick={() => {
                                 if (confirm("¿Eliminar esta medicación?")){
                                     removeMedication(med.id, residentId)
                                 }
                             }}
-                            className="px-2 py-1 text-red-600 border borde-red-600 rounded"
+                            className="px-2 py-1 text-red-600 border border-red-600 rounded"
                             >
                                 Eliminar
                             </button>

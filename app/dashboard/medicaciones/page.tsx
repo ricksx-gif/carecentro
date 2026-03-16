@@ -1,9 +1,10 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import MedicationForm from "@/modules/medications/components/MedicationForm"
 import MedicationsList from "@/modules/medications/components/MedicationsList"
 import { useMedications } from "@/modules/medications/hooks/useMedications"
+import { Medication } from "@/modules/medications/types/medication.type"
 
 export default function MedicacionesPage() {
 
@@ -13,8 +14,11 @@ export default function MedicacionesPage() {
     medications,
     fetchMedications,
     createMedication,
+    editMedication,
     removeMedication
   } = useMedications()
+
+  const [selectedMedication, setSelectedMedication] = useState<Medication | null>(null)
 
   useEffect(() => {
     fetchMedications(residentId)
@@ -30,6 +34,9 @@ export default function MedicacionesPage() {
       <MedicationForm
         residentId={residentId}
         createMedication={createMedication}
+        medication={selectedMedication}
+        updateMedication={editMedication}
+        clearSelectedMedication={() => setSelectedMedication(null)}
       />
 
       <MedicationsList
@@ -37,6 +44,7 @@ export default function MedicacionesPage() {
         medications={medications}
         fetchMedications={fetchMedications}
         removeMedication={removeMedication}
+        onEdit={setSelectedMedication}
       />
 
     </div>
