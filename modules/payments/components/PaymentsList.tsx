@@ -1,3 +1,5 @@
+// Lista del módulo `payments`.
+// Muestra los pagos de un residente y permite eliminarlos.
 "use client"
 
 import { useEffect } from "react"
@@ -10,13 +12,21 @@ type PaymentsListProps = {
   removePayment: (paymentId: string, residentId: string) => void
 }
 
+/**
+ * Tabla de pagos por residente.
+ *
+ * @param residentId Identificador del residente activo.
+ * @param payments Lista de pagos a mostrar.
+ * @param fetchPayments Función para refrescar los pagos.
+ * @param removePayment Elimina un pago concreto.
+ */
 export default function PaymentsList({
   residentId,
   payments,
   fetchPayments,
   removePayment
 }: PaymentsListProps) {
-
+  // Carga los pagos del residente cuando cambia el id.
   useEffect(() => {
     fetchPayments(residentId)
   }, [residentId])

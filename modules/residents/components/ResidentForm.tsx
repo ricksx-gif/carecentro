@@ -1,22 +1,50 @@
+// Formulario del módulo `residents`.
+// Permite crear un nuevo residente o actualizar uno existente.
 "use client"
 
 import { useState, useEffect} from "react"
 import { insertResidentTest, updateResident } from "../services/residents.service"
 
+type ResidentFormProps = {
+  resident: {
+    id: string
+    name: string
+    birth_date: string
+  } | null
+  fetchResidents: () => Promise<void> | void
+  clearSelectedResident: () => void
+}
 
-export default function ResidentForm({ resident, fetchResidents, clearSelectedResident}: any) {
-
+/**
+ * Formulario de alta/edición de residentes.
+ *
+ * @param resident Residente seleccionado para edición o `null` si es alta.
+ * @param fetchResidents Función para refrescar la lista tras guardar.
+ * @param clearSelectedResident Limpia el residente seleccionado y resetea el modo edición.
+ */
+export default function ResidentForm({
+  resident,
+  fetchResidents,
+  clearSelectedResident
+}: ResidentFormProps) {
   const [name, setName] = useState("")
   const [birthDate, setBirthDate] = useState("")
 
+  // Sincroniza el formulario cuando cambia el residente seleccionado.
   useEffect(() => {
     if (resident){
       setName(resident.name)
       setBirthDate(resident.birth_date)
+    } else {
+      setName("")
+      setBirthDate("")
     }
   }, [resident])
 
-
+  /**
+   * Maneja el envío del formulario, realizando inserción o actualización
+   * según exista o no un residente seleccionado.
+   */
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
@@ -32,11 +60,11 @@ export default function ResidentForm({ resident, fetchResidents, clearSelectedRe
           birth_date: birthDate
         })
       } else {
-      await insertResidentTest({
-        name,
-        birth_date: birthDate
-      })
-    }
+        await insertResidentTest({
+          name,
+          birth_date: birthDate
+        })
+      }
 
       await fetchResidents()
 

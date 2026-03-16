@@ -22,10 +22,8 @@ export default function MedicationsList({
   onEdit
 }: MedicationsListProps) {
 
-    console.log("medications:", medications)
-
+    // Carga o refresca las medicaciones cuando cambia el residente activo.
     useEffect(() => {
-        console.log("medications:", medications)
         fetchMedications(residentId)
     }, [residentId])
 

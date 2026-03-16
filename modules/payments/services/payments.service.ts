@@ -1,6 +1,14 @@
+// Servicios del módulo `payments`.
+// Encapsulan todas las operaciones CRUD contra la tabla `payments` en Supabase.
 import { supabase } from "@/lib/supabase"
 import { Payment } from "../types/payment.type"
 
+/**
+ * Inserta un nuevo pago asociado a un residente.
+ *
+ * @param payment Datos del pago sin `id` ni `created_at`.
+ * @returns filas insertadas o lanza un error en caso de fallo.
+ */
 export async function insertPayment(payment: Omit<Payment, "id" | "created_at">) {
   const { data, error } = await supabase
     .from("payments")
@@ -14,6 +22,12 @@ export async function insertPayment(payment: Omit<Payment, "id" | "created_at">)
   return data
 }
 
+/**
+ * Obtiene todos los pagos de un residente concreto.
+ *
+ * @param residentId Identificador del residente.
+ * @returns lista de pagos o lanza un error.
+ */
 export async function getPaymentsByResident(residentId: string) {
   const { data, error } = await supabase
     .from("payments")
@@ -28,6 +42,11 @@ export async function getPaymentsByResident(residentId: string) {
   return data
 }
 
+/**
+ * Elimina un pago por su identificador.
+ *
+ * @param paymentId Identificador del pago a eliminar.
+ */
 export async function deletePayment(paymentId: string) {
   const { error } = await supabase
     .from("payments")

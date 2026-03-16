@@ -1,20 +1,30 @@
+// Formulario del módulo `payments`.
+// Permite registrar un nuevo pago asociado a un residente.
 "use client"
 
 import { useState } from "react"
 
 type PaymentFormProps = {
   residentId: string
-  createPayment: any
+  createPayment: (payment: { resident_id: string; amount: number; payment_date: string }) => Promise<void> | void
 }
 
+/**
+ * Formulario para registrar pagos.
+ *
+ * @param residentId Identificador del residente al que se asocia el pago.
+ * @param createPayment Función que persiste el pago en la base de datos.
+ */
 export default function PaymentForm({
   residentId,
   createPayment
 }: PaymentFormProps) {
-
   const [amount, setAmount] = useState("")
   const [paymentDate, setPaymentDate] = useState("")
 
+  /**
+   * Maneja el envío del formulario y ejecuta la creación del pago.
+   */
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
