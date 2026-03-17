@@ -80,3 +80,27 @@ export async function updatePayment(paymentId: string, payment: Partial<Payment>
 
   return data
 }
+
+/**
+ * Obtiene métricas agregadas de los pagos.
+ * 
+ * @returns un objeto con `totalRevenue` y `totalPayments`.
+ */
+export async function getPaymentsMetrics() {
+  const { data, error } = await supabase
+    .from("payments")
+    .select("amount")
+
+  if (error) {
+    console.error("Error al obtener las métricas de pagos:", error)
+    throw error
+  }
+
+  const totalRevenue = data.reduce((sum, payment) => sum + payment.amount, 0)
+  const totalPayments = data.length
+
+  return {
+    totalRevenue,
+    totalPayments,
+  }
+}

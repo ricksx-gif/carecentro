@@ -89,8 +89,8 @@ Reglas:
 [x] Eliminar pago
 
 ## Dashboard financiero
-[ ] Mostrar métricas de pagos
-[ ] Mostrar ingresos totales
+[x] Mostrar métricas de pagos
+[x] Mostrar ingresos totales
 
 ---
 
