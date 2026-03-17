@@ -10,6 +10,7 @@ type PaymentsListProps = {
   payments: Payment[]
   fetchPayments: (residentId: string) => void
   removePayment: (paymentId: string, residentId: string) => void
+  handleOpenEditModal: (payment: Payment) => void
 }
 
 /**
@@ -19,23 +20,25 @@ type PaymentsListProps = {
  * @param payments Lista de pagos a mostrar.
  * @param fetchPayments Función para refrescar los pagos.
  * @param removePayment Elimina un pago concreto.
+ * @param handleOpenEditModal Abre el formulario en modo edición.
  */
 export default function PaymentsList({
   residentId,
   payments,
   fetchPayments,
-  removePayment
+  removePayment,
+  handleOpenEditModal,
 }: PaymentsListProps) {
   // Carga los pagos del residente cuando cambia el id.
   useEffect(() => {
     fetchPayments(residentId)
-  }, [residentId])
+  }, [residentId, fetchPayments])
 
   return (
     <div className="mt-6">
 
       <h2 className="text-lg font-semibold text-black mb-2">
-        Pagos
+        Historial de Pagos
       </h2>
 
       <table className="w-full border border-gray-600">
@@ -43,7 +46,7 @@ export default function PaymentsList({
           <tr className="bg-gray-100 text-black text-left">
             <th className="p-2 border border-gray-600">Monto</th>
             <th className="p-2 border border-gray-600">Fecha</th>
-            <th className="p-2 border border-gray-600">Acción</th>
+            <th className="p-2 border border-gray-600">Acciones</th>
           </tr>
         </thead>
 
@@ -65,14 +68,20 @@ export default function PaymentsList({
                   {payment.payment_date}
                 </td>
 
-                <td className="p-2 border border-gray-600">
+                <td className="p-2 border border-gray-600 space-x-2">
+                  <button
+                    onClick={() => handleOpenEditModal(payment)}
+                    className="px-2 py-1 text-blue-600 border border-blue-600 rounded"
+                  >
+                    Editar
+                  </button>
                   <button
                     onClick={() => {
                       if (confirm("¿Eliminar este pago?")) {
                         removePayment(payment.id, residentId)
                       }
                     }}
-                    className="px-2 py-1 text-red-600 border borde-red-600 rounded"
+                    className="px-2 py-1 text-red-600 border border-red-600 rounded"
                   >
                     Eliminar
                   </button>

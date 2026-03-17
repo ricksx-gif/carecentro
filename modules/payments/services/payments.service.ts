@@ -58,3 +58,25 @@ export async function deletePayment(paymentId: string) {
     throw error
   }
 }
+
+/**
+ * Actualiza un pago existente.
+ *
+ * @param paymentId El ID del pago a actualizar.
+ * @param payment Los datos a actualizar del pago.
+ * @returns Los datos del pago actualizado.
+ */
+export async function updatePayment(paymentId: string, payment: Partial<Payment>) {
+  const { data, error } = await supabase
+    .from("payments")
+    .update(payment)
+    .eq("id", paymentId)
+    .select()
+
+  if (error) {
+    console.error("Error al actualizar el pago:", error)
+    throw error
+  }
+
+  return data
+}

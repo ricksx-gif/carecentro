@@ -85,7 +85,7 @@ Reglas:
 ### CRUD pagos
 [x] Registrar pago
 [x] Listar pagos
-[ ] Editar pago
+[x] Editar pago
 [x] Eliminar pago
 
 ## Dashboard financiero

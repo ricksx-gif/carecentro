@@ -5,7 +5,8 @@ import { Payment } from "../types/payment.type"
 import {
   insertPayment,
   getPaymentsByResident,
-  deletePayment
+  deletePayment,
+  updatePayment as updatePaymentService,
 } from "../services/payments.service"
 
 /**
@@ -19,6 +20,8 @@ import {
  */
 export function usePayments() {
   const [payments, setPayments] = useState<Payment[]>([])
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [currentPayment, setCurrentPayment] = useState<Payment | null>(null)
 
   async function fetchPayments(residentId: string) {
     try {
@@ -47,10 +50,41 @@ export function usePayments() {
     }
   }
 
+  async function updatePayment(paymentId: string, payment: Partial<Payment>) {
+    try {
+      const updatedData = await updatePaymentService(paymentId, payment)
+      if (updatedData && updatedData.length > 0) {
+        const updatedPayment = updatedData[0]
+        setPayments((prevPayments) =>
+          prevPayments.map((p) => (p.id === paymentId ? updatedPayment : p)),
+        )
+      }
+      setIsEditModalOpen(false)
+      setCurrentPayment(null)
+    } catch (error) {
+      console.error("Error updating payment in hook:", error)
+    }
+  }
+
+  const handleOpenEditModal = (payment: Payment) => {
+    setCurrentPayment(payment)
+    setIsEditModalOpen(true)
+  }
+
+  const handleCloseEditModal = () => {
+    setCurrentPayment(null)
+    setIsEditModalOpen(false)
+  }
+
   return {
     payments,
+    isEditModalOpen,
+    currentPayment,
     fetchPayments,
     createPayment,
-    removePayment
+    removePayment,
+    updatePayment,
+    handleOpenEditModal,
+    handleCloseEditModal,
   }
 }
