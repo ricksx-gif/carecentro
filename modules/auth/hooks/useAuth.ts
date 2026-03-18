@@ -14,11 +14,12 @@ export const useAuth = () => {
   const login = async (credentials: Credentials) => {
     setLoading(true);
     setError(null);
+
     try {
-      await signInWithPassword(credentials);
-      router.push('/dashboard');
+      // lógica de login (luego irá signIn)
+      router.push('/login?registered=true');
     } catch (err: any) {
-      setError(err.message || 'Error en el inicio de sesión. Revisa tus credenciales.');
+      setError(err.message || 'Error en el registro. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }
@@ -27,12 +28,11 @@ export const useAuth = () => {
   const signUp = async (credentials: Credentials) => {
     setLoading(true);
     setError(null);
+
     try {
       await signUpService(credentials);
-      // You might want to show a success message to the user
-      // For now, redirecting to login
       router.push('/login?registered=true');
-    } catch (err: any)
+    } catch (err: any) {
       setError(err.message || 'Error en el registro. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
