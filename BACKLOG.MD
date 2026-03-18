@@ -97,8 +97,8 @@ Reglas:
 # Semana 4 — Autenticación
 
 ## Auth
-[ ] Implementar login
-[ ] Implementar registro
+[x] Implementar login
+[x] Implementar registro
 
 ## Seguridad
 [ ] Proteger rutas privadas
