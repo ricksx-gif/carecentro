@@ -101,13 +101,13 @@ Reglas:
 [x] Implementar registro
 
 ## Seguridad
-[ ] Proteger rutas privadas
-[ ] Implementar middleware de autenticación
+[x] Proteger rutas privadas
+[x] Implementar middleware de autenticación
 
 ## Roles
-[ ] Crear rol admin
-[ ] Crear rol enfermería
-[ ] Restringir acceso según rol
+[x] Crear rol admin
+[x] Crear rol enfermería
+[x] Restringir acceso según rol
 
 ---
 

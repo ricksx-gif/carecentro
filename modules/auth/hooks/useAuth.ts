@@ -16,10 +16,13 @@ export const useAuth = () => {
     setError(null);
 
     try {
-      // lógica de login (luego irá signIn)
-      router.push('/login?registered=true');
+      // Llamada al servicio de autenticación de Supabase
+      await signInWithPassword(credentials);
+      // En caso de éxito, redirigir al dashboard
+      router.push('/dashboard');
     } catch (err: any) {
-      setError(err.message || 'Error en el registro. Inténtalo de nuevo.');
+      // Si hay un error (ej. credenciales incorrectas), mostrarlo
+      setError(err.message || 'Error en el inicio de sesión. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }
