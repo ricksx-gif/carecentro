@@ -18,8 +18,8 @@ export const useAuth = () => {
     try {
       // Llamada al servicio de autenticación de Supabase
       await signInWithPassword(credentials);
-      // En caso de éxito, redirigir al dashboard
-      router.push('/dashboard');
+      // En caso de éxito, redirigir al dashboard con una recarga de página
+      window.location.href = ('/dashboard');
     } catch (err: any) {
       // Si hay un error (ej. credenciales incorrectas), mostrarlo
       setError(err.message || 'Error en el inicio de sesión. Inténtalo de nuevo.');

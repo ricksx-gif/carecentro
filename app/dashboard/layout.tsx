@@ -4,8 +4,9 @@
 'use client';
 import Link from "next/link";
 import { UserProvider, useUser } from "@/modules/auth/context/UserProvider";
+import { Button } from "@/components/ui/button";
 
-// Componente de navegación que ahora consume el contexto de usuario
+// Componente de navegación que ahora consume el contexto de usuario y usa el nuevo sistema de diseño
 function DashboardNav() {
   const { profile, loading } = useUser();
 
@@ -14,32 +15,33 @@ function DashboardNav() {
     return null;
   }
 
+  const navLinks = [
+    { href: "/dashboard", label: "Dashboard" },
+    { href: "/dashboard/residentes", label: "Residentes" },
+    { href: "/dashboard/medicaciones", label: "Medicaciones" },
+  ];
+
+  if (profile?.role === 'admin') {
+    navLinks.push({ href: "/dashboard/pagos", label: "Pagos" });
+  }
+
   return (
-    <nav className="space-y-4">
-      <Link href="/dashboard" className="block p-2 rounded hover:bg-blue-500" >
-        Dashboard
-      </Link>
-      <Link href="/dashboard/residentes" className="block p-2 rounded hover:bg-blue-500">
-        Residentes
-      </Link>
-      <Link href="/dashboard/medicaciones" className="block p-2 rounded hover:bg-blue-500" >
-        Medicaciones
-      </Link>
-      {/* El enlace a Pagos solo se muestra si el usuario es admin */}
-      {profile?.role === 'admin' && (
-        <Link href="/dashboard/pagos" className="block p-2 rounded hover:bg-blue-500">
-          Pagos
-        </Link>
-      )}
+    <nav className="space-y-2">
+      {navLinks.map((link) => (
+        <Button key={link.href} asChild variant="ghost" className="w-full justify-start">
+          <Link href={link.href}>
+            {link.label}
+          </Link>
+        </Button>
+      ))}
     </nav>
   );
 }
 
-
 function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <aside className="w-64 bg-blue-600 text-white p-6">
+    <div className="flex min-h-screen bg-background">
+      <aside className="w-64 bg-primary text-primary-foreground p-6">
         <h2 className="text-xl font-bold mb-8">CareCentro</h2>
         <DashboardNav />
       </aside>
