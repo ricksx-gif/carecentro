@@ -114,8 +114,8 @@ Reglas:
 # Semana 5 — UI Profesional
 
 ## Experiencia de usuario
-[ ] Mejorar diseño general
-[ ] Crear tabla profesional residentes
+[x] Mejorar diseño general
+[x] Crear tabla profesional residentes
 
 ## Estados UI
 [ ] Implementar loading states

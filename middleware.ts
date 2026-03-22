@@ -1,109 +1,122 @@
-// 1. FILENAME: middleware.ts
-// 2. LOCATION: /
-// 3. PURPOSE: Este middleware protege las rutas del dashboard, asegurando que solo los usuarios autenticados puedan acceder.
+/**
+ * @file middleware.ts
+ * @description Este middleware se encarga de la seguridad y el control de acceso de la aplicación.
+ *
+ * Sus responsabilidades principales son:
+ * 1. **Protección de Rutas**: Asegura que solo los usuarios autenticados puedan acceder a las rutas del dashboard.
+ * 2. **Redirección**:
+ *    - Redirige a `/login` a los usuarios no autenticados que intentan acceder al dashboard.
+ *    - Redirige a `/dashboard` a los usuarios ya autenticados que intentan acceder a `/login` o `/register`.
+ * 3. **Control de Acceso Basado en Roles (RBAC)**:
+ *    - Verifica el rol del usuario (`admin` o `enfermeria`) y restringe el acceso a ciertas rutas según su rol.
+ *
+ * Utiliza el cliente de Supabase para SSR (`createServerClient`) para gestionar la sesión del usuario
+ * a través de las cookies en cada petición.
+ */
 
 import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-// Definir aquí las rutas que requieren rol de administrador
+// Rutas restringidas solo para administradores.
 const adminRoutes = ['/dashboard/pagos'];
-// Definir aquí las rutas que requieren rol de enfermería
+// Rutas restringidas para el rol de enfermería (y también para admin).
 const enfermeriaRoutes = ['/dashboard/medicaciones', '/dashboard/residentes'];
- 
 
+/**
+ * Función principal del middleware que se ejecuta para las rutas definidas en `config.matcher`.
+ *
+ * @param request - La petición entrante (`NextRequest`).
+ * @returns Una respuesta (`NextResponse`) que puede ser la continuación de la petición o una redirección.
+ */
 export async function middleware(request: NextRequest) {
- let response = NextResponse.next()
-
-const supabase = createServerClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  {
-    cookies: {
-      get(name: string) {
-        return request.cookies.get(name)?.value
-      },
-      set(name: string, value: string, options: CookieOptions) {
-        response.cookies.set({
-          name,
-          value,
-          ...options,
-        })
-      },
-      remove(name: string, options: CookieOptions) {
-        response.cookies.set({
-          name,
-          value: '',
-          ...options,
-        })
-      },
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
     },
-  }
-)
+  });
 
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+  // Crea un cliente de Supabase específico para el entorno de servidor (middleware/SSR).
+  // Se encarga de leer y escribir las cookies de sesión de forma segura.
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        get(name: string) {
+          return request.cookies.get(name)?.value
+        },
+        set(name: string, value: string, options: CookieOptions) {
+          response.cookies.set({ name, value, ...options });
+        },
+        remove(name: string, options: CookieOptions) {
+          response.cookies.set({ name, value: '', ...options });
+        },
+      },
+    }
+  );
 
-  const user = session?.user
+  const { data: { session } } = await supabase.auth.getSession();
+  const user = session?.user;
 
-  // Redirigir a login si no hay usuario y se intenta acceder a rutas protegidas
+  // --- Lógica de Redirección para Usuarios Autenticados y No Autenticados ---
+
+  // Si no hay usuario y se intenta acceder a una ruta protegida, redirigir a login.
   if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
-    return NextResponse.redirect(new URL('/login', request.url))
+    return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  // Redirigir al dashboard si hay usuario y se intenta acceder a login o register
+  // Si ya hay un usuario, no debería poder ver las páginas de login o registro.
   if (user && (request.nextUrl.pathname.startsWith('/login') || request.nextUrl.pathname.startsWith('/register'))) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+    return NextResponse.redirect(new URL('/dashboard', request.url));
   }
 
-  // Lógica de control de acceso por roles
+  // --- Lógica de Control de Acceso por Roles (RBAC) ---
   if (user) {
     const { data: profile, error } = await supabase
         .from('profiles')
         .select('role')
         .eq('id', user.id)
         .single();
-    
-    // Si hay un error obteniendo el perfil o no tiene, redirigimos al dashboard por seguridad
+
+    // Si hay un error o el perfil no existe, redirigir al dashboard como medida de seguridad.
     if(error || !profile){
-      console.log(`Redirecting user with no profile from ${request.nextUrl.pathname}`);
-      // If the user is on the dashboard, and has no profile, we redirect them to the dashboard
-      // to avoid a redirect loop.
-      if(request.nextUrl.pathname.startsWith('/dashboard')){
-        return NextResponse.redirect(new URL('/dashboard', request.url));
-      }
-      return response;
+      console.warn(`Usuario sin perfil o con error intentando acceder a ${request.nextUrl.pathname}. Redirigiendo a /dashboard.`);
+      return NextResponse.redirect(new URL('/dashboard', request.url));
     }
     
     const userRole = profile.role;
     const requestedPath = request.nextUrl.pathname;
 
-    // Si el usuario es admin, tiene acceso a todo.
+    // El rol 'admin' tiene acceso a todas las rutas. No se aplican más restricciones.
     if(userRole === 'admin'){
       return response;
     }
 
-    // Si el usuario es enfermeria, comprobamos si tiene acceso.
+    // El rol 'enfermeria' solo tiene acceso a las rutas de enfermería.
     if(userRole === 'enfermeria'){
-      // An admin should not be able to access enfermeria routes if they are not explicitly allowed to.
-      const isEnfermeriaRoute = enfermeriaRoutes.some(route => requestedPath.startsWith(route));
+      // Si la ruta solicitada es una ruta de admin, se le deniega el acceso.
       const isAdminRoute = adminRoutes.some(route => requestedPath.startsWith(route));
-
-      // Allow access to non-protected routes.
-      if(!isEnfermeriaRoute && !isAdminRoute) {
-        return response;
-      }
-
-      if (isAdminRoute && !isEnfermeriaRoute) {
-        console.log(`Redirecting non-admin user from ${request.nextUrl.pathname}`);
+      if (isAdminRoute) {
+        console.log(`Acceso denegado para rol 'enfermeria' a la ruta de admin: ${requestedPath}. Redirigiendo.`);
         return NextResponse.redirect(new URL('/dashboard', request.url));
       }
     }
   }
 
-  return response
+  return response;
 }
 
+/**
+ * Configuración del Middleware.
+ *
+ * El `matcher` es un filtro que define en qué rutas se ejecutará el middleware.
+ * Esto es una optimización de rendimiento para evitar que se ejecute en cada petición
+ * (por ejemplo, en las de archivos estáticos de Next.js como imágenes o CSS).
+ *
+ * Rutas cubiertas:
+ * - `/dashboard/:path*`: Todas las rutas anidadas bajo `/dashboard`.
+ * - `/login`, `/register`, `/`: Las páginas de autenticación y la página principal.
+ */
 export const config = {
   matcher: [
     '/dashboard/:path*',

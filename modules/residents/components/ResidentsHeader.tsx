@@ -1,27 +1,35 @@
-// Encabezado del módulo `residents`.
-// Muestra el título del módulo y el total de residentes registrados.
 "use client"
 
+import { Button } from "@/components/ui/button"
 import { useResidents } from "../hooks/useResidents"
 
+// Props del componente
+type ResidentsHeaderProps = {
+  onAdd: () => void
+}
+
 /**
- * Encabezado del módulo de residentes.
+ * Encabezado de la página del módulo de residentes.
  *
- * Obtiene los residentes mediante `useResidents` solo para mostrar
- * el conteo total en el dashboard de residentes.
+ * Muestra un título, el número total de residentes (obtenido a través de `useResidents`),
+ * y un botón para iniciar el proceso de creación de un nuevo residente.
+ *
+ * @param onAdd - Callback que se ejecuta al hacer clic en el botón "Añadir Residente".
  */
-export default function ResidentsHeader() {
+export default function ResidentsHeader({ onAdd }: ResidentsHeaderProps) {
   const { residents } = useResidents()
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-black">
-        Módulo de Residentes
-      </h1>
-
-      <p className="mt-4 text-gray-600">
-        Total residentes: {residents.length}
-      </p>
+    <div className="flex justify-between items-center">
+      <div>
+        <h1 className="text-2xl font-bold text-black">
+          Módulo de Residentes
+        </h1>
+        <p className="mt-2 text-gray-600">
+          Total de residentes registrados: {residents.length}
+        </p>
+      </div>
+      <Button onClick={onAdd}>Añadir Residente</Button>
     </div>
   )
 }

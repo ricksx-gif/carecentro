@@ -4,35 +4,39 @@
 
 import { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
+import { Resident } from "../types/resident.type"
 
 /**
- * Hook que gestiona la colección de residentes.
+ * Hook personalizado para gestionar la lógica de los residentes.
  *
- * @returns objeto con:
- *  - residents: lista de residentes obtenidos de Supabase
- *  - fetchResidents: función para refrescar los datos manualmente
+ * Se encarga de:
+ * 1. Obtener la lista de residentes desde Supabase.
+ * 2. Mantener la lista en un estado de React.
+ * 3. Proveer una función para refrescar los datos manualmente.
+ *
+ * @returns Un objeto que contiene:
+ *  - `residents`: Un array con la lista de residentes.
+ *  - `fetchResidents`: Una función para volver a cargar los residentes.
  */
 export function useResidents() {
-  const [residents, setResidents] = useState<any[]>([])
+  const [residents, setResidents] = useState<Resident[]>([])
 
   /**
    * Obtiene todos los residentes desde la tabla `residents`
    * y actualiza el estado local.
    */
   async function fetchResidents() {
-    const { data, error } = await supabase
-      .from("residents")
-      .select("*")
+    const { data, error } = await supabase.from("residents").select("*")
 
-    if (error){
-      console.error(error)
+    if (error) {
+      console.error("Error fetching residents:", error)
       return
     }
 
     setResidents(data || [])
   }
 
-  // Carga inicial de residentes al montar el componente que use este hook.
+  // Efecto para cargar los residentes inicialmente cuando el hook se usa por primera vez.
   useEffect(() => {
     fetchResidents()
   }, [])

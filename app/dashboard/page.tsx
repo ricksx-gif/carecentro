@@ -26,8 +26,8 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <div className="p-10">
-      <h1 className="text-3xl font-bold text-blue-600">
+    <div>
+      <h1 className="text-3xl font-bold text-primary">
         Dashboard - CareCentro
       </h1>
       <div className="mt-6 grid grid-cols-3 gap-6">

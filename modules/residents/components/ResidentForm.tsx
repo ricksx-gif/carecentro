@@ -1,38 +1,33 @@
-// Formulario del módulo `residents`.
-// Permite crear un nuevo residente o actualizar uno existente.
 "use client"
 
-import { useState, useEffect} from "react"
-import { insertResidentTest, updateResident } from "../services/residents.service"
+import { useState, useEffect } from "react"
+import {
+  insertResidentTest,
+  updateResident,
+} from "../services/residents.service"
+import { Resident } from "../types/resident.type"
 
 type ResidentFormProps = {
-  resident: {
-    id: string
-    name: string
-    birth_date: string
-  } | null
-  fetchResidents: () => Promise<void> | void
-  clearSelectedResident: () => void
+  resident: Resident | null
+  onFormSubmit: () => void
 }
 
 /**
- * Formulario de alta/edición de residentes.
+ * Formulario para crear o editar un residente.
+ * Se muestra dentro de un Dialog.
  *
- * @param resident Residente seleccionado para edición o `null` si es alta.
- * @param fetchResidents Función para refrescar la lista tras guardar.
- * @param clearSelectedResident Limpia el residente seleccionado y resetea el modo edición.
+ * @param resident El residente a editar, o null si se crea uno nuevo.
+ * @param onFormSubmit Callback para notificar que el formulario se ha enviado o cancelado.
  */
 export default function ResidentForm({
   resident,
-  fetchResidents,
-  clearSelectedResident
+  onFormSubmit,
 }: ResidentFormProps) {
   const [name, setName] = useState("")
   const [birthDate, setBirthDate] = useState("")
 
-  // Sincroniza el formulario cuando cambia el residente seleccionado.
   useEffect(() => {
-    if (resident){
+    if (resident) {
       setName(resident.name)
       setBirthDate(resident.birth_date)
     } else {
@@ -41,10 +36,6 @@ export default function ResidentForm({
     }
   }, [resident])
 
-  /**
-   * Maneja el envío del formulario, realizando inserción o actualización
-   * según exista o no un residente seleccionado.
-   */
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
@@ -54,73 +45,64 @@ export default function ResidentForm({
     }
 
     try {
-      if (resident){
+      if (resident) {
         await updateResident(resident.id, {
           name,
-          birth_date: birthDate
+          birth_date: birthDate,
         })
       } else {
         await insertResidentTest({
           name,
-          birth_date: birthDate
+          birth_date: birthDate,
         })
       }
-
-      await fetchResidents()
-
-      setName("")
-      setBirthDate("")
-      clearSelectedResident()
-
+      onFormSubmit() // Cierra el diálogo y refresca los datos en la página.
     } catch (error) {
       console.error(error)
     }
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-black">Nombre</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Nombre
+        </label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className= "border border-gray-300 p-2 rounded w-full text-black bg-white"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-black bg-white"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-black">Fecha de nacimiento</label>
+        <label className="block text-sm font-medium text-gray-700">
+          Fecha de nacimiento
+        </label>
         <input
           type="date"
           value={birthDate}
           onChange={(e) => setBirthDate(e.target.value)}
-          className= "border border-gray-300 p-2 rounded w-full text-black bg-white"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-black bg-white"
         />
       </div>
 
-      <button
-        type="submit"
-        className="bg-green-600 text-white px-4 py-2 rounded"
-      >
-        {resident ? "Actualizar residente" : "Crear residente"}
-      </button>
-
-      {resident && (
+      <div className="flex justify-end space-x-2 pt-4">
         <button
-        type="button"
-        onClick={() => {
-          setName("")
-          setBirthDate("")
-          clearSelectedResident()
-        }}
-        className="bg-gray-600 text-white px-4 py-2 rounded ml-3"
+          type="button"
+          onClick={onFormSubmit}
+          className="rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300"
         >
           Cancelar
         </button>
-      )}
-
+        <button
+          type="submit"
+          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+        >
+          {resident ? "Actualizar" : "Crear"}
+        </button>
+      </div>
     </form>
   )
 }

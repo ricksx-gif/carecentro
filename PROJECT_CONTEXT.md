@@ -51,14 +51,13 @@ Actualmente el MVP incluye tres módulos principales.
 
 ## Módulo Residents
 
-Permite gestionar la información de los residentes.
+Permite gestionar la información de los residentes de forma eficiente y profesional.
 
 Funcionalidades:
 
-- crear residentes
-- visualizar residentes
-- actualizar información de residentes
-- eliminar residentes
+- **Crear, actualizar y eliminar** residentes a través de un formulario en una ventana modal.
+- **Visualizar residentes** en una tabla profesional con paginación, búsqueda por nombre y ordenamiento de columnas.
+- **Acciones rápidas** (editar, eliminar) en cada fila de la tabla para una gestión ágil.
 
 ---
 
@@ -214,15 +213,17 @@ Responsabilidades:
 
 ## Types
 
-Define los modelos de datos con TypeScript.
+Define los modelos de datos con TypeScript en su propia carpeta.
 
-Ejemplo:
+Ejemplo de archivo: `modules/residents/types/resident.type.ts`
+
+Ejemplo de tipo:
 
 - Resident
 - Medication
 - Payment
 
-Esto garantiza tipado fuerte en todo el sistema.
+Esto garantiza un tipado fuerte y centralizado en todo el sistema.
 
 ---
 
@@ -312,33 +313,45 @@ El desarrollo del sistema sigue un roadmap estructurado de 8 semanas para constr
 
 Actualmente el proyecto ha completado las siguientes etapas.
 
-Semana 1  
+**Semana 1**  
 Configuración inicial del proyecto  
 Inicialización de Next.js  
 Configuración del entorno de desarrollo  
 Conexión con Supabase  
 
-Semana 2  
+**Semana 2**  
 Diseño del esquema de base de datos  
 Definición de la arquitectura modular  
-Implementación del módulo Residents  
-CRUD completo de Residents  
+Implementación del módulo Residents (CRUD básico)
 
-Semana 3  
+**Semana 3**  
 Modelo de medicaciones vinculado a residentes  
 CRUD completo del módulo Medications  
 Modelo de pagos vinculado a residentes  
-CRUD completo del módulo Payments  
+CRUD completo del módulo Payments
 
+**Semana 4**
+Implementación de autenticación y roles de usuario.
+
+**Semana 5**
+Mejora de la interfaz de usuario y experiencia de usuario.
+
+---
 Estado actual del proyecto:
 
-**Semana 3 — Día 13 completado**
+**Semana 5 — UI Profesional completada**
+
+Se han finalizado tareas clave para mejorar la experiencia de usuario:
+- **Tabla de Residentes Profesional:** Se implementó una tabla de datos avanzada con búsqueda, paginación y ordenamiento.
+- **Formularios en Modales:** La creación y edición de residentes ahora se realiza en ventanas modales (Dialogs), mejorando el flujo de trabajo.
+- **Diseño General:** Se ha mejorado la consistencia visual y la usabilidad del módulo de residentes.
 
 El sistema actualmente incluye:
 
-- módulo Residents
-- módulo Medications
-- módulo Payments
+- Módulo Residents (con UI profesional)
+- Módulo Medications
+- Módulo Payments
+- Autenticación de usuarios
 
 ---
 
