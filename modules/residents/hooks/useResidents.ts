@@ -1,45 +1,70 @@
-// Hook del módulo `residents`.
-// Se encarga de obtener y mantener en estado la lista de residentes desde Supabase.
 "use client"
 
 import { useEffect, useState } from "react"
-import { supabase } from "@/lib/supabase"
 import { Resident } from "../types/resident.type"
+import { getResidents } from "../services/residents.service" // ✅ Importamos desde service (NO Supabase)
 
 /**
- * Hook personalizado para gestionar la lógica de los residentes.
- *
- * Se encarga de:
- * 1. Obtener la lista de residentes desde Supabase.
- * 2. Mantener la lista en un estado de React.
- * 3. Proveer una función para refrescar los datos manualmente.
- *
- * @returns Un objeto que contiene:
- *  - `residents`: Un array con la lista de residentes.
- *  - `fetchResidents`: Una función para volver a cargar los residentes.
+ * Hook para manejar residentes
+ * RESPONSABILIDAD:
+ * - Manejar estado (UI)
+ * - Llamar al service
  */
 export function useResidents() {
+
+  // ✅ Estado principal de datos
   const [residents, setResidents] = useState<Resident[]>([])
 
+  // ✅ Estado de carga (para UI-01)
+  const [loading, setLoading] = useState(false)
+
+  // ✅ Estado de error (para UI-02)
+  const [error, setError] = useState<string | null>(null)
+
   /**
-   * Obtiene todos los residentes desde la tabla `residents`
-   * y actualiza el estado local.
+   * Función que obtiene los residentes
+   * FLUJO:
+   * Hook → Service → Supabase
    */
   async function fetchResidents() {
-    const { data, error } = await supabase.from("residents").select("*")
 
-    if (error) {
-      console.error("Error fetching residents:", error)
-      return
+    // 🔄 Inicia loading
+    setLoading(true)
+
+    // 🧹 Limpia errores anteriores
+    setError(null)
+
+    try {
+      // 📡 Llamada al service (NO DB directa)
+      const data = await getResidents()
+
+      // 💾 Guardar en estado
+      setResidents(data)
+
+    } catch (err: any) {
+
+      // ❌ Manejo de error para UI
+      setError(err.message || "Error inesperado")
+
+    } finally {
+
+      // 🔚 Finaliza loading SIEMPRE
+      setLoading(false)
     }
-
-    setResidents(data || [])
   }
 
-  // Efecto para cargar los residentes inicialmente cuando el hook se usa por primera vez.
+  /**
+   * Se ejecuta automáticamente al montar el componente
+   */
   useEffect(() => {
     fetchResidents()
   }, [])
 
-  return { residents, fetchResidents }
+  // 📦 Exponemos todo lo que la UI necesita
+  return {
+    residents,
+    loading,
+    error,
+    fetchResidents,
+  }
 }

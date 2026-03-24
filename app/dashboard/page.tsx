@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import MetricCard from "@/components/MetricCard"
+import { MetricCard } from "@/components/MetricCard"
 import { getPaymentsMetrics } from "@/modules/payments/services/payments.service"
 
 export default function Dashboard() {
@@ -26,17 +26,25 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-primary">
-        Dashboard - CareCentro
+  <div className="max-w-7xl mx-auto space-y-6">
+    
+    <div className="space-y-8">
+    <h1 className="text-4xl font-bold tracking-tight text-foreground">  
+        Dashboard
       </h1>
-      <div className="mt-6 grid grid-cols-3 gap-6">
-        <MetricCard titulo="Residentes" valor={totalResidentes} />
-        <MetricCard titulo="Ingresos Totales" valor={totalRevenue} />
-        <MetricCard titulo="Total de Pagos" valor={totalPayments} />
-        <MetricCard titulo="Pagos Pendientes" valor={pagosPendientes} />
-        <MetricCard titulo="Medicaciones Hoy" valor={medicacionesHoy} />
-      </div>
+      <p className="text-sm text-muted-foreground">
+        Resumen general del sistema CareCentro
+      </p>
     </div>
-  )
+    
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <MetricCard title="Residentes" value={totalResidentes} />
+      <MetricCard title="Ingresos Totales" value={`$${totalRevenue}`} />
+      <MetricCard title="Total de Pagos" value={totalPayments} />
+      <MetricCard title="Pagos Pendientes" value={pagosPendientes} />
+      <MetricCard title="Medicaciones Hoy" value={medicacionesHoy} />
+    </div>
+
+  </div>
+)
 }

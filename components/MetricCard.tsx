@@ -1,28 +1,20 @@
 // Definición del tipo de propiedades que recibe el componente.
 // Esto garantiza que siempre se pase un título (string)
 // y un valor numérico a la tarjeta.
-type MetricCardProps = {
-  titulo: string
-  valor: number
+import { Card, CardContent } from "@/components/ui/card"
+
+type Props = {
+  title: string
+  value: number | string
 }
 
-// Componente reutilizable que representa una tarjeta de métrica.
-// Se utiliza en el dashboard para mostrar datos resumidos.
-export default function MetricCard({ titulo, valor }: MetricCardProps) {
+export function MetricCard({ title, value }: Props) {
   return (
-    // Contenedor visual de la tarjeta con estilo base
-    <div className="bg-white p-6 shadow rounded-lg">
-      
-      {/* Título descriptivo de la métrica */}
-      <h2 className="text-lg font-semibold text-black">
-        {titulo}
-      </h2>
-
-      {/* Valor principal de la métrica */}
-      <p className="text-2xl font-bold mt-2 text-black">
-        {valor}
-      </p>
-
-    </div>
+    <Card className="bg-white/5 backdrop-blur-lg border border-white/10 shadow-lg hover:shadow-[0_10px_40px_rgba(0,0,0,0.5)] hover:-translate-y-1 transition-all duration-300 hover:bg-white/10">
+      <CardContent className="p-5">
+        <p className="text-sm text-white/50">{title}</p>
+        <p className="text-3xl font-bold mt-2">{value}</p>
+      </CardContent>
+    </Card>
   )
 }

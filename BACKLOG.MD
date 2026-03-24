@@ -1,13 +1,23 @@
 # CareCentro - Backlog de Desarrollo (MVP)
 
-Este backlog convierte el roadmap del proyecto en tareas técnicas que se deben implementar.
+Este backlog convierte el roadmap del proyecto en tareas técnicas estructuradas para implementación con IA.
 
 Reglas:
 
-- Completar tareas en orden.
-- Marcar con [x] cuando estén terminadas.
-- No saltar módulos sin terminar los anteriores.
+- Completar tareas en orden
+- Marcar con [x] cuando estén terminadas
+- No saltar módulos sin terminar los anteriores
 
+## Flujo de trabajo con IA
+
+- Claude es responsable de leer y analizar el BACKLOG.md
+- Claude debe seleccionar la siguiente tarea a implementar
+- Claude debe diseñar la solución
+- Claude debe generar instrucciones exactas para DeepSeek
+
+- DeepSeek NO tiene acceso al BACKLOG.md
+- DeepSeek solo ejecuta instrucciones proporcionadas
+- DeepSeek NO debe tomar decisiones de arquitectura
 ---
 
 # Semana 1 — Frontend y Arquitectura Base
@@ -117,72 +127,239 @@ Reglas:
 [x] Mejorar diseño general
 [x] Crear tabla profesional residentes
 
-## Estados UI
-[ ] Implementar loading states
-[ ] Manejar errores de API
+---
 
-## Panel familiar
-[ ] Crear vista familiar
-[ ] Limitar acceso a información
+## TASK ID: UI-01
+Título: Implementar loading states
 
-## Componentes reutilizables
-[ ] Crear carpeta shared/components
-[ ] Unificar estilos
+Descripción:
+Agregar estados de carga en componentes del sistema para mejorar la experiencia de usuario.
+
+Criterios de aceptación:
+- [x] Mostrar indicador de carga en tablas
+- [x] Mostrar loading en formularios
+- [x] Evitar bloqueos completos de UI
+
+---
+
+## TASK ID: UI-02
+Título: Manejo de errores de API
+
+Descripción:
+Implementar manejo de errores en llamadas a la API y mostrar feedback al usuario.
+
+Criterios de aceptación:
+- [ ] Capturar errores en hooks
+- [ ] Mostrar mensajes de error en UI
+- [ ] Evitar fallos silenciosos
+
+---
+
+## TASK ID: UI-03
+Título: Panel familiar
+
+Descripción:
+Crear una vista para familiares con acceso limitado a información del residente.
+
+Criterios de aceptación:
+- [ ] Crear nueva vista
+- [ ] Restringir datos sensibles
+- [ ] Validar permisos
+
+---
+
+## TASK ID: UI-04
+Título: Componentes reutilizables
+
+Descripción:
+Crear sistema de componentes compartidos para mejorar consistencia.
+
+Criterios de aceptación:
+- [ ] Crear carpeta shared/components
+- [ ] Unificar estilos
+- [ ] Reutilizar componentes existentes
 
 ---
 
 # Semana 6 — Lógica SaaS
 
-## Reportes
-[ ] Generar PDF de residentes
+## TASK ID: SAAS-01
+Título: Generar reportes PDF
 
-## Métricas
-[ ] Agregar métricas avanzadas al dashboard
+Descripción:
+Permitir generar reportes PDF de residentes.
 
-## Suscripciones
-[ ] Diseñar modelo planes SaaS
+Criterios de aceptación:
+- [ ] Generar PDF desde datos reales
+- [ ] Diseño legible
+- [ ] Descarga funcional
 
-## Multi-tenant
-[ ] Separar datos por centro
+---
 
-## Optimización
-[ ] Optimizar consultas SQL
+## TASK ID: SAAS-02
+Título: Métricas avanzadas
+
+Descripción:
+Agregar métricas avanzadas al dashboard.
+
+Criterios de aceptación:
+- [ ] Mostrar nuevas métricas
+- [ ] Integrar con datos existentes
+- [ ] Visualización clara
+
+---
+
+## TASK ID: SAAS-03
+Título: Modelo de suscripciones
+
+Descripción:
+Diseñar sistema de planes para SaaS.
+
+Criterios de aceptación:
+- [ ] Definir tipos de planes
+- [ ] Asociar funcionalidades a planes
+- [ ] Preparar base para pagos
+
+---
+
+## TASK ID: SAAS-04
+Título: Multi-tenant
+
+Descripción:
+Separar datos por centro (multi-tenant).
+
+Criterios de aceptación:
+- [ ] Aislar datos por organización
+- [ ] Ajustar queries
+- [ ] Validar acceso por usuario
+
+---
+
+## TASK ID: SAAS-05
+Título: Optimización de consultas
+
+Descripción:
+Optimizar consultas SQL para mejorar rendimiento.
+
+Criterios de aceptación:
+- [ ] Reducir tiempos de respuesta
+- [ ] Evitar consultas innecesarias
+- [ ] Revisar índices
 
 ---
 
 # Semana 7 — Automatización
 
-## WhatsApp
-[ ] Integrar WhatsApp Business API
-[ ] Crear recordatorios automáticos
+## TASK ID: AUTO-01
+Título: Integración WhatsApp
 
-## Notificaciones
-[ ] Crear sistema de notificaciones internas
+Descripción:
+Integrar WhatsApp Business API para comunicación.
 
-## Auditoría
-[ ] Registrar logs del sistema
-[ ] Guardar historial de acciones
+Criterios de aceptación:
+- [ ] Conectar API
+- [ ] Enviar mensajes básicos
+- [ ] Manejar errores
 
-## Seguridad
-[ ] Revisar seguridad básica
+---
 
-## Testing
-[ ] Realizar pruebas generales
+## TASK ID: AUTO-02
+Título: Recordatorios automáticos
+
+Descripción:
+Crear sistema de recordatorios de medicación.
+
+Criterios de aceptación:
+- [ ] Programar envíos
+- [ ] Asociar a residentes
+- [ ] Validar ejecución
+
+---
+
+## TASK ID: AUTO-03
+Título: Notificaciones internas
+
+Descripción:
+Sistema de notificaciones dentro de la app.
+
+Criterios de aceptación:
+- [ ] Crear sistema de notificaciones
+- [ ] Mostrar en UI
+- [ ] Marcar como leídas
+
+---
+
+## TASK ID: AUTO-04
+Título: Auditoría del sistema
+
+Descripción:
+Registrar acciones importantes del sistema.
+
+Criterios de aceptación:
+- [ ] Guardar logs
+- [ ] Registrar usuario y acción
+- [ ] Consultar historial
+
+---
+
+## TASK ID: AUTO-05
+Título: Seguridad general
+
+Descripción:
+Revisar seguridad del sistema.
+
+Criterios de aceptación:
+- [ ] Validar inputs
+- [ ] Revisar permisos
+- [ ] Prevenir vulnerabilidades
+
+---
+
+## TASK ID: AUTO-06
+Título: Testing general
+
+Descripción:
+Realizar pruebas completas del sistema.
+
+Criterios de aceptación:
+- [ ] Probar módulos principales
+- [ ] Detectar errores
+- [ ] Validar flujos críticos
 
 ---
 
 # Semana 8 — Lanzamiento
 
-## Producción
-[ ] Deploy en Vercel
-[ ] Configurar variables de entorno
+## TASK ID: DEPLOY-01
+Título: Deploy en producción
 
-## Dominio
-[ ] Conectar dominio
+Criterios de aceptación:
+- [ ] Deploy en Vercel
+- [ ] Configurar variables de entorno
 
-## Infraestructura
-[ ] Configurar backups automáticos
-[ ] Configurar monitoreo
+---
 
-## Lanzamiento
-[ ] Checklist final MVP
+## TASK ID: DEPLOY-02
+Título: Configuración de dominio
+
+Criterios de aceptación:
+- [ ] Conectar dominio
+- [ ] Verificar acceso
+
+---
+
+## TASK ID: DEPLOY-03
+Título: Infraestructura
+
+Criterios de aceptación:
+- [ ] Configurar backups
+- [ ] Configurar monitoreo
+
+---
+
+## TASK ID: DEPLOY-04
+Título: Lanzamiento MVP
+
+Criterios de aceptación:
+- [ ] Checklist completo
+- [ ] Sistema funcional

@@ -1,255 +1,139 @@
-# CareCentro — Contexto del Proyecto
-
-## Descripción del Proyecto
-
-CareCentro es una plataforma SaaS diseñada para ayudar a centros de cuidado de adultos mayores a gestionar residentes, medicaciones y pagos de forma estructurada y digital.
-
-El sistema permite a administradores y cuidadores registrar información de residentes, tratamientos médicos y pagos realizados, todo desde un panel administrativo centralizado.
-
-El proyecto se está desarrollando como un **Minimum Viable Product (MVP)** con arquitectura escalable que permitirá evolucionar hacia un SaaS completo.
+# CareCentro — PROJECT CONTEXT (CLAUDE OPTIMIZED)
 
 ---
 
-# Objetivo del SaaS
+## 🧠 SYSTEM ROLE
 
-El objetivo de CareCentro es proporcionar un sistema digital que simplifique la gestión diaria de centros de cuidado para adultos mayores.
+You are acting as a **Senior Software Architect and Code Reviewer**.
 
-La plataforma busca:
+Your responsibilities:
 
-- centralizar la información de los residentes
-- registrar medicaciones asociadas a cada residente
-- gestionar pagos y registros financieros
-- mejorar la organización administrativa del centro
-- reducir errores en registros manuales
-- proporcionar una base tecnológica escalable
+- Analyze the entire project structure
+- Detect architectural issues
+- Ensure consistency across modules
+- Suggest improvements
+- Refactor when necessary
+- Guide implementation for other AI (DeepSeek)
 
----
+You have FULL access to the project (root-level understanding).
 
-# Problema que Resuelve
-
-Muchos centros de cuidado pequeños y medianos gestionan su información utilizando:
-
-- hojas de cálculo
-- registros en papel
-- sistemas desconectados
-
-Esto genera problemas como:
-
-- pérdida de información médica
-- dificultad para llevar control de medicaciones
-- falta de visibilidad financiera
-- duplicación de información
-- procesos administrativos ineficientes
-
-CareCentro busca resolver estos problemas proporcionando **una única plataforma digital para la gestión del centro**.
+You are the **source of truth for all technical decisions**.
 
 ---
 
-# Funcionalidades Principales
+## 🎯 PROJECT OVERVIEW
 
-Actualmente el MVP incluye tres módulos principales.
+CareCentro is a SaaS platform designed to manage elderly care centers.
 
-## Módulo Residents
+Core features:
+- Residents management
+- Medications tracking
+- Payments tracking
 
-Permite gestionar la información de los residentes de forma eficiente y profesional.
-
-Funcionalidades:
-
-- **Crear, actualizar y eliminar** residentes a través de un formulario en una ventana modal.
-- **Visualizar residentes** en una tabla profesional con paginación, búsqueda por nombre y ordenamiento de columnas.
-- **Acciones rápidas** (editar, eliminar) en cada fila de la tabla para una gestión ágil.
+The system is currently an MVP with scalable architecture.
 
 ---
 
-## Módulo Medications
+## 🚨 NON-NEGOTIABLE RULES
 
-Permite registrar medicaciones asociadas a cada residente.
+These rules MUST NEVER be broken:
 
-Funcionalidades:
+1. Components MUST NOT access the database directly.
+2. All business logic MUST go through hooks.
+3. Services are the ONLY layer that interacts with Supabase.
+4. Modules MUST remain independent.
+5. DO NOT create cross-module dependencies.
+6. DO NOT duplicate logic.
+7. ALWAYS use TypeScript types.
+8. ALWAYS follow existing patterns before creating new ones.
 
-- registrar medicaciones
-- visualizar medicaciones por residente
-- eliminar medicaciones
-- relación directa con residentes
-
----
-
-## Módulo Payments
-
-Permite registrar pagos realizados por residentes.
-
-Funcionalidades:
-
-- registrar pagos
-- visualizar historial de pagos
-- eliminar pagos
-- relación directa con residentes
+If any rule is violated → you MUST correct it.
 
 ---
 
-# Tecnologías Utilizadas
+## 🧱 ARCHITECTURE
 
-## Frontend
+The system follows a **Feature-Based Modular Architecture**.
 
-- Next.js (App Router)
-- React
-- TypeScript
-
-## Estilos
-
-- Tailwind CSS
-
-## Backend y Base de Datos
-
-- Supabase
-- PostgreSQL
-
-## Herramientas de Desarrollo
-
-- Cursor AI
-- Git
-- GitHub
-
----
-
-# Arquitectura del Sistema
-
-El sistema utiliza una **Feature-Based Architecture**.
-
-Cada funcionalidad del sistema se implementa como un módulo independiente.
-
-Esto permite:
-
-- escalabilidad
-- mantenibilidad
-- separación clara de responsabilidades
-- desarrollo modular
-
----
-
-# Estructura de Carpetas
-
-app/
-dashboard/
+Structure:
 
 modules/
-residents/
-medications/
-payments/
+  module-name/
+    components/
+    hooks/
+    services/
+    types/
 
-lib/
-supabase.ts
-
-Docs/
-
+Each module is self-contained and independent.
 
 ---
 
-# Estructura de un Módulo
+## 🔁 DATA FLOW (STRICT)
 
-Cada módulo sigue la misma estructura.
+UI (components)
+→ Hooks (business logic)
+→ Services (database)
+→ Supabase
 
-modules/
-module-name/
-components/
-hooks/
-services/
-types/
-
+🚫 Any other flow is strictly forbidden.
 
 ---
 
-# Explicación de Cada Capa
+## 📦 CURRENT MODULES
 
-## Components
+- residents
+- medications
+- payments
 
-Contienen la interfaz de usuario.
-
-Responsabilidades:
-
-- formularios
-- tablas
-- botones
-- eventos de usuario
-
-Los componentes **no deben comunicarse directamente con la base de datos**.
+Future modules may include:
+- staff
+- appointments
+- medical_records
+- reports
 
 ---
 
-## Hooks
+## 🧠 DEVELOPMENT PRINCIPLES
 
-Los hooks contienen la lógica de negocio.
+Before suggesting or generating code:
 
-Ejemplos:
-
-- useResidents
-- useMedications
-- usePayments
-
-Responsabilidades:
-
-- manejar estado
-- llamar servicios
-- actualizar UI
+1. Analyze existing patterns
+2. Reuse logic when possible
+3. Maintain consistency
+4. Prefer simplicity over complexity
+5. Avoid over-engineering
 
 ---
 
-## Services
+## 🔍 CODE REVIEW RESPONSIBILITIES
 
-Los servicios se comunican con Supabase.
+When reviewing code, you MUST:
 
-Ejemplo:
-
-- insertResident()
-- insertMedication()
-- insertPayment()
-
-Responsabilidades:
-
-- consultas a la base de datos
-- operaciones CRUD
+- Detect architectural violations
+- Identify duplicated logic
+- Suggest refactoring
+- Improve performance when necessary
+- Ensure scalability
 
 ---
 
-## Types
+## ⚙️ COLLABORATION WITH DEEPSEEK
 
-Define los modelos de datos con TypeScript en su propia carpeta.
+You are responsible for generating instructions for another AI (DeepSeek).
 
-Ejemplo de archivo: `modules/residents/types/resident.type.ts`
+When doing so:
 
-Ejemplo de tipo:
-
-- Resident
-- Medication
-- Payment
-
-Esto garantiza un tipado fuerte y centralizado en todo el sistema.
+- Be explicit
+- Define exact file paths
+- Define expected behavior
+- Avoid ambiguity
+- Do NOT assume context
 
 ---
 
-# Módulos Actuales del Sistema
+## 📊 DATABASE STRUCTURE
 
-modules
-residents
-medications
-payments
-
-
-Cada módulo es independiente.
-
-Esto permite agregar nuevos módulos en el futuro como:
-
-staff
-appointments
-medical_records
-reports
-
-
----
-
-# Arquitectura de Base de Datos
-
-El modelo actual es relacional.
+Relational model:
 
 residents
 │
@@ -257,349 +141,69 @@ residents
 │
 └── payments
 
+Relations:
 
-Relaciones:
+- residents → medications (1:N)
+- residents → payments (1:N)
 
-- un residente puede tener múltiples medicaciones
-- un residente puede tener múltiples pagos
+Foreign keys:
 
-Claves foráneas:
-
-medications.resident_id → residents.id
-payments.resident_id → residents.id
-
+- medications.resident_id → residents.id
+- payments.resident_id → residents.id
 
 ---
 
-# Reglas para Crear Nuevos Módulos
+## 📍 CURRENT STATE
 
-Todo nuevo módulo debe seguir la estructura:
+Week 5 — UI Professional Completed
 
-modules/
-module-name/
-components/
-hooks/
-services/
-types/
-
-
-Reglas:
-
-1. Los componentes no deben acceder directamente a la base de datos.
-2. Toda lógica de datos debe pasar por hooks.
-3. Los servicios son los únicos que llaman a Supabase.
-4. Cada módulo debe ser independiente.
-5. Evitar dependencias cruzadas entre módulos.
+System includes:
+- Residents module (advanced UI)
+- Medications module
+- Payments module
+- Authentication system
 
 ---
 
-# Escalabilidad del Sistema
+## 🚀 SCALABILITY GUIDELINES
 
-El sistema está diseñado para crecer de forma modular.
+To maintain scalability:
 
-Para mantener la escalabilidad:
-
-- usar arquitectura modular
-- mantener separación de responsabilidades
-- reutilizar hooks y servicios cuando sea posible
-- evitar lógica duplicada
-- mantener consistencia entre módulos
+- Keep modules independent
+- Avoid tight coupling
+- Reuse logic
+- Maintain naming consistency
+- Follow same structure across modules
 
 ---
 
-# Roadmap de Desarrollo
+## 📌 SOURCE OF TRUTH FILES
 
-El desarrollo del sistema sigue un roadmap estructurado de 8 semanas para construir el MVP del SaaS.
+- PROJECT_CONTEXT.md
+- BACKLOG.md
+- ROADMAP.md
 
-Actualmente el proyecto ha completado las siguientes etapas.
-
-**Semana 1**  
-Configuración inicial del proyecto  
-Inicialización de Next.js  
-Configuración del entorno de desarrollo  
-Conexión con Supabase  
-
-**Semana 2**  
-Diseño del esquema de base de datos  
-Definición de la arquitectura modular  
-Implementación del módulo Residents (CRUD básico)
-
-**Semana 3**  
-Modelo de medicaciones vinculado a residentes  
-CRUD completo del módulo Medications  
-Modelo de pagos vinculado a residentes  
-CRUD completo del módulo Payments
-
-**Semana 4**
-Implementación de autenticación y roles de usuario.
-
-**Semana 5**
-Mejora de la interfaz de usuario y experiencia de usuario.
-
----
-Estado actual del proyecto:
-
-**Semana 5 — UI Profesional completada**
-
-Se han finalizado tareas clave para mejorar la experiencia de usuario:
-- **Tabla de Residentes Profesional:** Se implementó una tabla de datos avanzada con búsqueda, paginación y ordenamiento.
-- **Formularios en Modales:** La creación y edición de residentes ahora se realiza en ventanas modales (Dialogs), mejorando el flujo de trabajo.
-- **Diseño General:** Se ha mejorado la consistencia visual y la usabilidad del módulo de residentes.
-
-El sistema actualmente incluye:
-
-- Módulo Residents (con UI profesional)
-- Módulo Medications
-- Módulo Payments
-- Autenticación de usuarios
+These files MUST always be respected.
 
 ---
 
-# Visión a Largo Plazo
+## ⚠️ FINAL INSTRUCTION
 
-CareCentro evolucionará hacia una plataforma SaaS completa para la gestión de centros de cuidado.
+You must act as a **senior architect**, not as a code generator.
 
-En el futuro podrá incluir:
+Your priority is:
+1. Correctness
+2. Architecture
+3. Maintainability
+4. Scalability
 
-- historial médico completo
-- gestión de personal
-- recordatorios de medicación
-- reportes administrativos
-- paneles analíticos
-- arquitectura multi-tenant
+## Uso del ROADMAP
 
-## Plan de desarrollo
+El ROADMAP.md define la visión global del proyecto.
 
-El proyecto sigue dos documentos principales:
+Debe utilizarse cuando:
+- se tomen decisiones arquitectónicas
+- se diseñen features complejas
+- se evalúe escalabilidad futura
 
-ROADMAP.md → planificación general del proyecto  
-BACKLOG.md → tareas técnicas que deben implementarse
-
-Las tareas del backlog deben completarse en orden.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+No es necesario para tareas pequeñas.

@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { toast } from "sonner" // 🔥 toast moderno
 
 import { Button } from "@/components/ui/button"
 import {
@@ -13,28 +14,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+import { useState } from "react"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog"
+
 import { Resident } from "../types/resident.type"
 import { deleteResident } from "../services/residents.service"
 
-/**
- * Props para la función getColumns.
- * Permite pasar manejadores de eventos a las celdas de la tabla.
- */
 type GetColumnsProps = {
   onEdit: (resident: Resident) => void
   fetchResidents: () => void
 }
 
-/**
- * Genera y devuelve la definición de columnas para la tabla de residentes.
- *
- * Se usa una función en lugar de un array estático para poder inyectar
- * manejadores de eventos (onEdit, fetchResidents) en las acciones de las celdas.
- *
- * @param onEdit - Función a llamar cuando se selecciona la opción "Editar".
- * @param fetchResidents - Función para refrescar la lista de residentes después de una eliminación.
- * @returns Un array de `ColumnDef<Resident>`.
- */
 export const getColumns = ({
   onEdit,
   fetchResidents,
@@ -42,7 +38,6 @@ export const getColumns = ({
   {
     accessorKey: "name",
     header: ({ column }) => {
-      // Permite ordenar la tabla por nombre
       return (
         <Button
           variant="ghost"
@@ -58,46 +53,83 @@ export const getColumns = ({
     accessorKey: "birth_date",
     header: "Fecha de nacimiento",
     cell: ({ row }) => {
-      // Formatea la fecha para mejor legibilidad
       const date = new Date(row.original.birth_date)
       return date.toLocaleDateString()
     },
   },
   {
     id: "actions",
-    // Renderiza un menú desplegable con acciones para cada fila
     cell: ({ row }) => {
       const resident = row.original
 
+      const [open, setOpen] = useState(false)
+
       const handleDelete = async () => {
-        const confirmDelete = confirm(
-          `¿Estás seguro de que quieres eliminar a ${resident.name}?`
-        )
-        if (confirmDelete) {
+        try {
           await deleteResident(resident.id)
-          fetchResidents() // Refrescar la lista
+          fetchResidents()
+          setOpen(false)
+
+          // 🔥 SUCCESS TOAST
+          toast.success("Residente eliminado correctamente")
+
+        } catch (error) {
+          console.error("Error eliminando residente:", error)
+
+          // 🔥 ERROR TOAST
+          toast.error("No se pudo eliminar el residente")
         }
       }
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Abrir menú</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => onEdit(resident)}>
-              Editar
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleDelete} className="text-red-600">
-              Eliminar
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Acciones</DropdownMenuLabel>
+
+              <DropdownMenuItem onClick={() => onEdit(resident)}>
+                Editar
+              </DropdownMenuItem>
+
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem
+                onClick={() => setOpen(true)}
+                className="text-destructive"
+              >
+                Eliminar
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Eliminar residente</DialogTitle>
+                <DialogDescription>
+                  ¿Estás seguro de eliminar a{" "}
+                  <strong>{resident.name}</strong>? Esta acción no se puede deshacer.
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="flex justify-end gap-2">
+                <Button variant="outline" onClick={() => setOpen(false)}>
+                  Cancelar
+                </Button>
+
+                <Button variant="destructive" onClick={handleDelete}>
+                  Eliminar
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        </>
       )
     },
   },

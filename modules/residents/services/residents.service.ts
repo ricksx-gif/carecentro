@@ -86,3 +86,16 @@ export async function updateResident(
 
   return data
 }
+
+export async function getResidents() {
+  const { data, error } = await supabase
+    .from("residents")
+    .select("*")
+
+  if (error) {
+    console.error("Error obteniendo residentes:", error)
+    throw new Error(error.message)
+  }
+
+  return data || []
+}
