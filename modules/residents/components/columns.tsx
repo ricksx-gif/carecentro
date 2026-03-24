@@ -85,23 +85,24 @@ export const getColumns = ({
         <>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
+              <Button variant="ghost" className="h-8 w-8 p-0 text-white/40 hover:text-white hover:bg-white/10 rounded-md transition-all">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end"
+            className="bg-zinc-900/90 backdrop-blur-xl border border-white/10 text-white shadow-xl">
               <DropdownMenuLabel>Acciones</DropdownMenuLabel>
 
-              <DropdownMenuItem onClick={() => onEdit(resident)}>
-                Editar
+              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 text-white cursor-pointer">
+                 Editar
               </DropdownMenuItem>
 
               <DropdownMenuSeparator />
 
               <DropdownMenuItem
                 onClick={() => setOpen(true)}
-                className="text-destructive"
+                className="hover:bg-red-500/20 focus:bg-red-500/20 text-red-400 cursor-pointer"
               >
                 Eliminar
               </DropdownMenuItem>
@@ -109,21 +110,40 @@ export const getColumns = ({
           </DropdownMenu>
 
           <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent>
+            <DialogContent 
+            className="bg-black/60 backdrop-blur-xl border border-white/10 text-white shadow-2xl">
               <DialogHeader>
                 <DialogTitle>Eliminar residente</DialogTitle>
-                <DialogDescription>
+                <DialogDescription className="text-white/40">
                   ¿Estás seguro de eliminar a{" "}
                   <strong>{resident.name}</strong>? Esta acción no se puede deshacer.
                 </DialogDescription>
               </DialogHeader>
 
               <div className="flex justify-end gap-2">
-                <Button variant="outline" onClick={() => setOpen(false)}>
+                <Button 
+                className="
+                    bg-white/5
+                    hover:bg-white/10
+                    text-white
+                    border border-white/10
+                    backdrop-blur-lg
+                    transition-all
+
+                    focus:outline-none
+                    focus:ring-0
+                    focus-visible:ring-0
+                    focus-visible:outline-none
+
+                    data-[state=open]:bg-white/10
+                  "
+                variant="outline" onClick={() => setOpen(false)}>
                   Cancelar
                 </Button>
 
-                <Button variant="destructive" onClick={handleDelete}>
+                <Button 
+                className="bg-red-500/80 hover:bg-red-500 text-white shadow-lg transition-all"
+                variant="destructive" onClick={handleDelete}>
                   Eliminar
                 </Button>
               </div>

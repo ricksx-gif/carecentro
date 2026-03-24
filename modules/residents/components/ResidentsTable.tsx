@@ -40,6 +40,10 @@ export default function ResidentsTable({
     );
   }
 
-  // ✅ DATA
-  return <DataTable columns={columns} data={residents} />;
+  // ✅ DATA 
+  return (
+    <div className="bg-white/5 transition-colors backdrop-blur-xl border border-white/10 rounded-2xl p-6 shadow-2xl">
+  <DataTable columns={columns} data={residents} />
+    </div>
+  );
 }

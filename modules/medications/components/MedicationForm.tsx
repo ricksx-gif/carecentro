@@ -73,44 +73,73 @@ export default function MedicationForm({
     <form onSubmit={handleSubmit} className="mt-6 space-y-4">
 
       <div>
-        <label className="block text-sm font-medium text-black">
+        <label className="text-sm text-white/60 mb-1 block">
           Medicación
         </label>
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="border border-gray-300 p-2 rounded w-full text-black bg-white"
+          className="
+          w-full rounded-lg px-3 py-2
+          bg-white/5 border border-white/10
+          text-white placeholder:text-white/40
+          backdrop-blur-lg
+          focus:outline-none focus:ring-0
+          focus:border-white/20 focus:bg-white/10
+          transition-all"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-black">
+        <label className=" text-sm text-white/60 mb-1 block" >
           Dosis
         </label>
         <input
           type="text"
           value={dose}
           onChange={(e) => setDose(e.target.value)}
-          className="border border-gray-300 p-2 rounded w-full text-black bg-white"
+          className=" 
+          w-full rounded-lg px-3 py-2
+          bg-white/5 border border-white/10
+          text-white placeholder:text-white/40
+          backdrop-blur-lg
+          focus:outline-none focus:ring-0
+          focus:border-white/20 focus:bg-white/10
+          transition-all"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-black">
+        <label className="text-sm text-white/60 mb-1 block">
           Frecuencia
         </label>
         <input
           type="text"
           value={schedule}
           onChange={(e) => setSchedule(e.target.value)}
-          className="border border-gray-300 p-2 rounded w-full text-black bg-white"
+          className="
+          w-full rounded-lg px-3 py-2
+          bg-white/5 border border-white/10
+          text-white placeholder:text-white/40
+          backdrop-blur-lg
+          focus:outline-none focus:ring-0
+          focus:border-white/20 focus:bg-white/10
+          transition-all"
         />
       </div>
 
       <button
         type="submit"
-        className="bg-green-600 text-white px-4 py-2 rounded"
+        className="
+        mt-2
+         px-4 py-2 rounded-lg
+         bg-white/10 hover:bg-white/20
+         text-white border border-white/10
+         backdrop-blur-lg shadow-lg
+         transition-all
+         focus:outline-none focus:ring-0
+         "
       >
         {medication ? "Actualizar Medicación" : "Agregar Medicación"}
       </button>
@@ -124,7 +153,14 @@ export default function MedicationForm({
             setSchedule("")
             clearSelectedMedication?.()
           }}
-          className="bg-gray-600 text-white px-4 py-2 rounded ml-3"
+          className="mt-2
+         px-4 py-2 rounded-lg
+         bg-white/10 hover:bg-white/20
+         text-white border border-white/10
+         backdrop-blur-lg shadow-lg
+         transition-all
+         focus:outline-none focus:ring-0
+          ml-3"
         >
           Cancelar
         </button>

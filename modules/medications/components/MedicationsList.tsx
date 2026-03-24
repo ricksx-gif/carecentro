@@ -2,6 +2,14 @@
 
 import { useEffect } from "react"
 import { Medication } from "../types/medication.type"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+import { MoreHorizontal } from "lucide-react"
 
 
 type MedicationsListProps = {
@@ -27,60 +35,119 @@ export default function MedicationsList({
         fetchMedications(residentId)
     }, [residentId])
 
-    return(
-        <div className="mt-6">
+    return (
+  <div className="
+    mt-6
+    rounded-2xl
+    bg-white/5 backdrop-blur-xl
+    border border-white/10
+    shadow-xl
+    p-4
+  ">
 
-            <h2 className="text-lg font-semibold text-black mb-2">
-                Medicaciones 
-            </h2>
+      <h2 className="text-lg font-semibold text-white/80 mb-4 tracking-tight">
+          Medicaciones
+      </h2>
 
-            <table className="w-full border border-gray-600">
-                <thead>
-                    <tr className="bg-gray-100 text-black text-left">
-                        <th className="p-2 border border-gray-600">Medicamento</th>
-                        <th className="p-2 border border-gray-600">Dosis</th>
-                        <th className="p-2 border border-gray-600">Frecuencia</th>
-                        <th className="p-2 border border-gray-600">Acción</th>
-                    </tr>
-                </thead>
+    <table className="w-full">
 
-                <tbody>
-                    {medications.map((med)=> (
-                       <tr key={med.id}>
-                          <td className="p-2 border border-gray-600 text-black">
-                             {med.name}
-                          </td>
+      {/* HEADER */}
+      <thead>
+        <tr className="border-b border-white/10">
+          <th className="text-white/60 font-medium text-sm py-3 text-left">
+            Medicamento
+          </th>
+          <th className="text-white/60 font-medium text-sm py-3 text-left">
+            Dosis
+          </th>
+          <th className="text-white/60 font-medium text-sm py-3 text-left">
+            Frecuencia
+          </th>
+        </tr>
+      </thead>
 
-                          <td className="p-2 border border-gray-600 text-black">
-                             {med.dose}
-                          </td>
+      {/* BODY */}
+      <tbody>
+        {medications.map((med) => (
+          <tr
+            key={med.id}
+            className="border-b border-white/5
+              hover:bg-white/5
+              transition-colors
+              last:border-0"
+             >
+            <td className="py-3 text-white/80 font-medium">
+              {med.name}
+            </td>
 
-                          <td className="p-2 border border-gray-600 text-black">
-                             {med.schedule}
-                          </td>
+            <td className="py-3 text-white/70">
+              {med.dose}
+            </td>
 
-                          <td className="p-2 border border-gray-600">
-                            <button
-                              onClick={() => onEdit(med)}
-                              className="px-2 py-1 text-blue-600 border border-blue-600 rounded mr-2"
-                            >
-                              Editar
-                            </button>
-                            <button
-                            onClick={() => {
-                                if (confirm("¿Eliminar esta medicación?")){
-                                    removeMedication(med.id, residentId)
-                                }
-                            }}
-                            className="px-2 py-1 text-red-600 border border-red-600 rounded"
-                            >
-                                Eliminar
-                            </button>
-                          </td>
-                       </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
-    )
+            <td className="py-3 text-white/70">
+              {med.schedule}
+            </td>
+
+            <td className="py-3">
+
+             <DropdownMenu>
+               <DropdownMenuTrigger asChild>
+                 <button className="
+                   p-2 rounded-md
+                   text-white/60 hover:text-white
+                   hover:bg-white/10
+                   transition
+                ">
+                   <MoreHorizontal className="h-4 w-4" />
+                 </button>
+             </DropdownMenuTrigger>
+
+             <DropdownMenuContent
+               align="end"
+               className="
+               bg-black/60 backdrop-blur-xl
+               border border-white/10
+               text-white
+              "
+             >
+
+             <DropdownMenuItem
+               onClick={() => onEdit(med)}
+               className="cursor-pointer
+                text-white/70
+                hover:text-white
+                hover:bg-white/10
+                focus:bg-white/10
+                data-[highlighted]:bg-white/10"
+             >
+              Editar
+             </DropdownMenuItem>
+
+             <DropdownMenuItem
+               onClick={() => {
+                 if (confirm("¿Eliminar esta medicación?")) {
+                    removeMedication(med.id, residentId)
+                }
+              }}
+              className="cursor-pointer
+                text-white/70
+                hover:text-white
+                hover:bg-white/10
+                focus:bg-white/10
+                data-[highlighted]:bg-white/10
+              "
+             >
+               Eliminar
+             </DropdownMenuItem>
+
+               </DropdownMenuContent>
+             </DropdownMenu>
+            </td> 
+          </tr>
+        ))}
+      </tbody>
+
+    </table>
+  </div>
+ )
 }

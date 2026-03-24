@@ -75,23 +75,35 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="w-80 bg-white/5 border border-white/10 text-white placeholder:text-white/40 backdrop-blur-lg focus:border-white/20 focus:bg-white/10 transition-all"
         />
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-xl border border-white/10 overflow-hidden">
         <Table>
-          <TableHeader>
+          <TableHeader className="text-white/60">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id}  className="border-b border-white/10 hover:bg-white/5 transition-colors">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} 
+                    className="
+                         text-white/60
+                         [&_button]:bg-transparent
+                         [&_button:hover]:bg-white/10
+                         [&_button]:text-white/60
+                         [&_button:hover]:text-white
+                         [&_button]:shadow-none
+                         [&_button]:border-none
+                      "
+                    >
+                      <div className="flex items-center gap-2 text-white/60 hover:text-white transition-all">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
                             header.getContext()
                           )}
+                      </div>
                     </TableHead>
                   )
                 })}
@@ -103,10 +115,10 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+                   className="border-b border-white/10 hover:bg-white/5 transition-colors"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id}  className="text-white/80">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -119,7 +131,7 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-24 text-center text-white/40"
                 >
                   No se encontraron resultados.
                 </TableCell>

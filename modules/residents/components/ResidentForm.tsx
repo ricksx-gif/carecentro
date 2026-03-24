@@ -67,58 +67,101 @@ export default function ResidentForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Nombre
-        </label>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          disabled={loading} // 🔥 deshabilitar
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-black bg-white"
-        />
-      </div>
+  <form onSubmit={handleSubmit} className="space-y-6">
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">
-          Fecha de nacimiento
-        </label>
-        <input
-          type="date"
-          value={birthDate}
-          onChange={(e) => setBirthDate(e.target.value)}
-          disabled={loading} // 🔥 deshabilitar
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm text-black bg-white"
-        />
-      </div>
+    {/* NOMBRE */}
+    <div>
+      <label className="block text-sm font-medium text-white/60 mb-1">
+        Nombre
+      </label>
 
-      <div className="flex justify-end space-x-2 pt-4">
-        <button
-          type="button"
-          onClick={onFormSubmit}
-          disabled={loading} // 🔥 bloquear cancel también
-          className="rounded-md bg-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-300"
-        >
-          Cancelar
-        </button>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        disabled={loading}
+        className="
+          w-full rounded-lg px-3 py-2
+          bg-white/5 border border-white/10
+          text-white placeholder:text-white/40
+          backdrop-blur-lg
+          focus:outline-none focus:ring-0
+          focus:border-white/20 focus:bg-white/10
+          transition-all
+        "
+      />
+    </div>
 
-        <button
-          type="submit"
-          disabled={loading} // 🔥 clave
-          className="flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
-        >
-          {loading && <LoadingSpinner size="sm" />} {/* 🔥 spinner */}
-          {loading
-            ? resident
-              ? "Actualizando..."
-              : "Guardando..."
-            : resident
-            ? "Actualizar"
-            : "Crear"}
-        </button>
-      </div>
-    </form>
-  )
+    {/* FECHA */}
+    <div>
+      <label className="block text-sm font-medium text-white/60 mb-1">
+        Fecha de nacimiento
+      </label>
+
+      <input
+        type="date"
+        value={birthDate}
+        onChange={(e) => setBirthDate(e.target.value)}
+        disabled={loading}
+        className="
+          w-full rounded-lg px-3 py-2
+          bg-white/5 border border-white/10
+          text-white
+          backdrop-blur-lg
+          focus:outline-none focus:ring-0
+          focus:border-white/20 focus:bg-white/10
+          transition-all
+        "
+      />
+    </div>
+
+    {/* BOTONES */}
+    <div className="flex justify-end gap-3 pt-4">
+
+      {/* CANCELAR */}
+      <button
+        type="button"
+        onClick={onFormSubmit}
+        disabled={loading}
+        className="
+          px-4 py-2 rounded-lg
+          bg-white/5 hover:bg-white/10
+          text-white border border-white/10
+          backdrop-blur-lg
+          transition-all
+          focus:outline-none focus:ring-0
+        "
+      >
+        Cancelar
+      </button>
+
+      {/* CREAR / ACTUALIZAR */}
+      <button
+        type="submit"
+        disabled={loading}
+        className="
+          flex items-center gap-2
+          px-4 py-2 rounded-lg
+          bg-white/10 hover:bg-white/20
+          text-white border border-white/10
+          backdrop-blur-lg shadow-lg
+          transition-all
+          focus:outline-none focus:ring-0
+          disabled:opacity-50
+        "
+      >
+        {loading && <LoadingSpinner size="sm" />}
+
+        {loading
+          ? resident
+            ? "Actualizando..."
+            : "Guardando..."
+          : resident
+          ? "Actualizar"
+          : "Crear"}
+      </button>
+
+    </div>
+  </form>
+ )
 }
