@@ -19,7 +19,7 @@ export default function ResidentsTable({
   fetchResidents,
   onEdit,
   loading,
-  error, // 🔥 IMPORTANTE: ahora sí lo usamos
+  error, 
 }: ResidentsTableProps) {
 
   const columns = getColumns({ onEdit, fetchResidents });

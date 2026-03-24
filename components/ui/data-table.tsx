@@ -78,8 +78,8 @@ export function DataTable<TData, TValue>({
           className="w-80 bg-white/5 border border-white/10 text-white placeholder:text-white/40 backdrop-blur-lg focus:border-white/20 focus:bg-white/10 transition-all"
         />
       </div>
-      <div className="rounded-xl border border-white/10 overflow-hidden">
-        <Table>
+      <div className="rounded-xl border-white/10 overflow-hidden">
+        <Table className="w-full">
           <TableHeader className="text-white/60">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}  className="border-b border-white/10 hover:bg-white/5 transition-colors">

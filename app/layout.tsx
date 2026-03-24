@@ -5,6 +5,7 @@ import { Toaster } from "sonner"; // 🔥 IMPORTAR SONNER
 import AnimationProvider from "@/components/providers/AnimationProvider";
 import PageTransition from "@/components/providers/PageTransition";
 
+
 // 🔥 FUENTES
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,7 +38,17 @@ export default function RootLayout({
       
 
         {/* 🔥 TOASTER GLOBAL (NECESARIO) */}
-        <Toaster richColors position="top-right" />
+        <Toaster 
+         position="top-right"
+         toastOptions={{
+         className: `
+         bg-black/80 backdrop-blur-xl
+         border border-white/10
+         text-white
+         shadow-xl
+         `, 
+         }}
+         />
       </body>
     </html>
   );

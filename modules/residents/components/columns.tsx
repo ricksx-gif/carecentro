@@ -83,44 +83,67 @@ export const getColumns = ({
 
       return (
         <>
+          {/* ACCIONES */}
+        <div className="text-right">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0 text-white/40 hover:text-white hover:bg-white/10 rounded-md transition-all">
+              <Button variant="ghost" 
+                  className="p-2 rounded-md
+                        text-white/60 hover:text-white
+                        hover:bg-white/10
+                        transition
+                      ">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end"
-            className="bg-zinc-900/90 backdrop-blur-xl border border-white/10 text-white shadow-xl">
-              <DropdownMenuLabel>Acciones</DropdownMenuLabel>
-
-              <DropdownMenuItem className="hover:bg-white/10 focus:bg-white/10 text-white cursor-pointer">
+            className="  bg-black/60 backdrop-blur-xl
+                         border border-white/10
+                         text-white
+                    ">
+            
+              <DropdownMenuItem 
+              onClick={() => onEdit(resident)}
+              className="
+                       cursor-pointer
+                        text-white/70
+                        hover:text-white
+                        hover:bg-white/10
+                        focus:bg-white/10
+                        data-[highlighted]:bg-white/10">
                  Editar
               </DropdownMenuItem>
 
-              <DropdownMenuSeparator />
-
               <DropdownMenuItem
                 onClick={() => setOpen(true)}
-                className="hover:bg-red-500/20 focus:bg-red-500/20 text-red-400 cursor-pointer"
+                className="
+                        cursor-pointer
+                        text-red-400
+                        hover:text-red-300
+                        hover:bg-red-500/10
+                        focus:bg-red-500/10
+                        data-[highlighted]:bg-red-500/10
+                      "
               >
                 Eliminar
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
+        </div>
+          {/* 🔥 MODAL Pro */}
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent 
             className="bg-black/60 backdrop-blur-xl border border-white/10 text-white shadow-2xl">
               <DialogHeader>
                 <DialogTitle>Eliminar residente</DialogTitle>
-                <DialogDescription className="text-white/40">
+                <DialogDescription className="text-white/60">
                   ¿Estás seguro de eliminar a{" "}
                   <strong>{resident.name}</strong>? Esta acción no se puede deshacer.
                 </DialogDescription>
               </DialogHeader>
 
-              <div className="flex justify-end gap-2">
+              <div className="flex justify-end gap-2 mt-4">
                 <Button 
                 className="
                     bg-white/5
@@ -128,21 +151,17 @@ export const getColumns = ({
                     text-white
                     border border-white/10
                     backdrop-blur-lg
-                    transition-all
-
-                    focus:outline-none
-                    focus:ring-0
-                    focus-visible:ring-0
-                    focus-visible:outline-none
-
-                    data-[state=open]:bg-white/10
+                    focus:outline-none focus:ring-0
                   "
                 variant="outline" onClick={() => setOpen(false)}>
                   Cancelar
                 </Button>
 
                 <Button 
-                className="bg-red-500/80 hover:bg-red-500 text-white shadow-lg transition-all"
+                className="
+                  bg-red-500/80 hover:bg-red-500
+                  text-white
+                  focus:outline-none focus:ring-0"
                 variant="destructive" onClick={handleDelete}>
                   Eliminar
                 </Button>

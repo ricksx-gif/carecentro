@@ -7,6 +7,8 @@ import {
 } from "../services/residents.service"
 import { Resident } from "../types/resident.type"
 import { LoadingSpinner } from "@/shared/components/LoadingSpinner" // 🔥 NUEVO
+import { toast } from "sonner" 
+
 
 type ResidentFormProps = {
   resident: Resident | null
@@ -37,7 +39,14 @@ export default function ResidentForm({
     e.preventDefault()
 
     if (!name || !birthDate) {
-      alert("Todos los campos son obligatorios")
+      toast.error("Todos los campos son obligatorios", {
+        style: { 
+           background: "rgba(0,0,0,0.8)",
+           color: "#fff",
+           border: "1px solid rgba(255,255,255,0.1)",
+           backdropFilter: "blur(10px)",
+        },
+      }) 
       return
     }
 

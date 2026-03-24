@@ -4,22 +4,33 @@ import Link from 'next/link';
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
-        <div>
-          <h1 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Inicia sesión en CareCentro
+    <div className="
+       min-h-screen
+       w-full
+       flex items-center justify-center
+       bg-gradient-to-br from-black via-zinc-900 to-black
+       ">
+
+      <div className="w-full max-w-md">
+
+        <div className="mb-6 text-center">
+          <h1 className="text-3xl font-semibold text-white tracking-tight">
+            Inicia sesión 
           </h1>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Ingresa tus credenciales para acceder al panel de administración.
+
+          <p className="text-white/50 text-sm mt-1">
+            Ingresa tus credenciales para acceder.
           </p>
-        </div>
-        <div className="flex justify-center">
+        </div> 
+        
           <LoginForm />
-        </div>
-        <p className="mt-2 text-center text-sm text-gray-600">
+        
+        <p className="mt-4 text-center text-sm text-white/50">
           ¿No tienes una cuenta?{' '}
-          <Link href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+          <Link 
+          href="/register" 
+          className="text-white hover:underline"
+          >
             Regístrate
           </Link>
         </p>

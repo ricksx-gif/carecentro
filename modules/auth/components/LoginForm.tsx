@@ -17,11 +17,20 @@ export function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-sm">
+    <div
+      className="
+        w-full max-w-md
+        rounded-2xl
+        bg-white/5 backdrop-blur-xl
+        border border-white/10
+        shadow-[0_0_40px_rgba(255,255,255,0.05)] shadow-black/20
+        p-4
+       " >
+    <form onSubmit={handleSubmit} className="mt-6 space-y-5 w-full p-4">
       <div>
         <label
           htmlFor="email"
-          className="block text-sm font-medium leading-6 text-gray-900"
+          className="text-sm text-white/60 mb-1 block"
         >
           Correo Electrónico
         </label>
@@ -34,7 +43,13 @@ export function LoginForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            className="w-full rounded-lg px-3 py-2
+             bg-white/5 border border-white/10
+             text-white placeholder:text-white/40
+             backdrop-blur-lg
+             focus:outline-none focus:ring-1
+             focus:border-white/20 focus:bg-white/10
+             transition-all"
           />
         </div>
       </div>
@@ -42,7 +57,7 @@ export function LoginForm() {
       <div>
         <label
           htmlFor="password"
-          className="block text-sm font-medium leading-6 text-gray-900"
+          className="text-sm text-white/60 mb-1 block" 
         >
           Contraseña
         </label>
@@ -55,7 +70,13 @@ export function LoginForm() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            className="w-full rounded-lg px-3 py-2
+             bg-white/5 border border-white/10
+             text-white placeholder:text-white/40
+             backdrop-blur-lg
+             focus:outline-none focus:ring-1
+             focus:border-white/20 focus:bg-white/10
+             transition-all"
           />
         </div>
       </div>
@@ -67,10 +88,22 @@ export function LoginForm() {
       )}
 
       <div>
-        <Button type="submit" disabled={loading} className="w-full">
+        <Button 
+         type="submit" 
+         disabled={loading} 
+         className=" 
+           w-full mt-6
+           py-2 rounded-lg
+           bg-white/10
+           text-white font-medium
+           border border-white/10
+           hover:bg-white/20
+           hover:scale-[1.02]
+           active:scale-[0.99]
+           transition-all">
           {loading ? (
             <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              <Loader2 className="text-sm text-white/60 mb-1 block" />
               Iniciando sesión...
             </>
           ) : (
@@ -79,5 +112,6 @@ export function LoginForm() {
         </Button>
       </div>
     </form>
+    </div>
   );
 }

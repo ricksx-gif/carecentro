@@ -1,34 +1,44 @@
-
 // Formulario del módulo `medications`.
 // Permite crear o actualizar una medicación asociada a un residente.
-import { useEffect, useState } from "react"
-import { Medication } from "../types/medication.type"
+import { useEffect, useState } from "react";
+import { Medication } from "../types/medication.type";
+import { toast } from "sonner";
 
 type MedicationFormProps = {
-    residentId: string
-    createMedication: any
-    medication?: Medication | null
-    updateMedication?: (medicationId: string, residentId: string, medication: Pick<Medication, "name" | "dose" | "schedule">) => Promise<void> | void
-    clearSelectedMedication?: () => void
-}
+  residentId: string;
+  createMedication: any;
+  medication?: Medication | null;
+  updateMedication?: (
+    medicationId: string,
+    residentId: string,
+    medication: Pick<Medication, "name" | "dose" | "schedule">,
+  ) => Promise<void> | void;
+  clearSelectedMedication?: () => void;
+};
 
 export default function MedicationForm({
   residentId,
   createMedication,
   medication,
   updateMedication,
-  clearSelectedMedication
+  clearSelectedMedication,
 }: MedicationFormProps) {
-
-  const [name, setName] = useState("")
-  const [dose, setDose] = useState("")
-  const [schedule, setSchedule] = useState("")
+  const [name, setName] = useState("");
+  const [dose, setDose] = useState("");
+  const [schedule, setSchedule] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!name || !dose || !schedule) {
-      alert("Todos los campos son obligatorios")
+      toast.error("Todos los campos son obligatorios", {
+        style: { 
+           background: "rgba(0,0,0,0.8)",
+           color: "#fff",
+           border: "1px solid rgba(255,255,255,0.1)",
+           backdropFilter: "blur(10px)",
+        },
+      }) 
       return
     }
 
@@ -38,22 +48,22 @@ export default function MedicationForm({
           name,
           dose,
           schedule,
-        })
+        });
       } else {
         await createMedication({
           resident_id: residentId,
           name,
           dose,
-          schedule
-        })
+          schedule,
+        });
       }
 
-      setName("")
-      setDose("")
-      setSchedule("")
-      clearSelectedMedication?.()
+      setName("");
+      setDose("");
+      setSchedule("");
+      clearSelectedMedication?.();
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
@@ -63,19 +73,26 @@ export default function MedicationForm({
   // Returns:
   // - void
   useEffect(() => {
-    if (!medication) return
-    setName(medication.name)
-    setDose(medication.dose)
-    setSchedule(medication.schedule)
-  }, [medication])
+    if (!medication) return;
+    setName(medication.name);
+    setDose(medication.dose);
+    setSchedule(medication.schedule);
+  }, [medication]);
 
   return (
+    <div
+      className="
+        mt-6
+        rounded-2xl
+        bg-white/5 backdrop-blur-xl
+        border border-white/10
+        shadow-xl
+        p-4
+      "
+    >
     <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-
       <div>
-        <label className="text-sm text-white/60 mb-1 block">
-          Medicación
-        </label>
+        <label className="text-sm text-white/60 mb-1 block">Medicación</label>
         <input
           type="text"
           value={name}
@@ -92,9 +109,7 @@ export default function MedicationForm({
       </div>
 
       <div>
-        <label className=" text-sm text-white/60 mb-1 block" >
-          Dosis
-        </label>
+        <label className=" text-sm text-white/60 mb-1 block">Dosis</label>
         <input
           type="text"
           value={dose}
@@ -111,9 +126,7 @@ export default function MedicationForm({
       </div>
 
       <div>
-        <label className="text-sm text-white/60 mb-1 block">
-          Frecuencia
-        </label>
+        <label className="text-sm text-white/60 mb-1 block">Frecuencia</label>
         <input
           type="text"
           value={schedule}
@@ -148,10 +161,10 @@ export default function MedicationForm({
         <button
           type="button"
           onClick={() => {
-            setName("")
-            setDose("")
-            setSchedule("")
-            clearSelectedMedication?.()
+            setName("");
+            setDose("");
+            setSchedule("");
+            clearSelectedMedication?.();
           }}
           className="mt-2
          px-4 py-2 rounded-lg
@@ -165,7 +178,8 @@ export default function MedicationForm({
           Cancelar
         </button>
       )}
-
     </form>
-  )
+    </div>
+  
+  );
 }
