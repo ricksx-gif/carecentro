@@ -128,7 +128,7 @@ function DashboardLayoutContent({ children }: { children: React.ReactNode }) {
         <div className="relative z-10">
           <h2 className="text-lg font-bold tracking-tight mb-8 flex items-center gap-3 text-white">
             <Hospital className="h-6 w-6" />
-            CareCentro
+            Velora
           </h2>
 
           <DashboardNav />

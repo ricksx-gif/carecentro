@@ -32,8 +32,8 @@ export default function Dashboard() {
     <h1 className="text-4xl font-bold tracking-tight text-foreground">  
         Dashboard
       </h1>
-      <p className="text-sm text-muted-foreground">
-        Resumen general del sistema CareCentro
+      <p className="text-white/40 text-sm mt-1">
+        Resumen general del sistema Velora
       </p>
     </div>
     

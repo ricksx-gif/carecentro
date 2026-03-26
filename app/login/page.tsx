@@ -13,7 +13,7 @@ export default function LoginPage() {
 
       <div className="w-full max-w-md">
 
-        <div className="mb-6 text-center">
+       {/* <div className="mb-6 text-center">
           <h1 className="text-3xl font-semibold text-white tracking-tight">
             Inicia sesión 
           </h1>
@@ -21,7 +21,7 @@ export default function LoginPage() {
           <p className="text-white/50 text-sm mt-1">
             Ingresa tus credenciales para acceder.
           </p>
-        </div> 
+        </div> */} 
         
           <LoginForm />
         

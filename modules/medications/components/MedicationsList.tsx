@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { Medication } from "../types/medication.type";
 
 import {
@@ -20,13 +20,15 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 type MedicationsListProps = {
   residentId: string;
   medications: Medication[];
   fetchMedications: (residentId: string) => void;
-  removeMedication: (medicationId: string, residentId: string) => void;
-  onEdit: (medication: Medication) => void;
+  removeMedication: (id: string, residentId: string) =>void;
+  onEdit: any;
+  error: string | null;
 };
 
 export default function MedicationsList({
@@ -35,12 +37,13 @@ export default function MedicationsList({
   fetchMedications,
   removeMedication,
   onEdit,
+  error,
 }: MedicationsListProps) {
 
   // 🔥 ESTADO (CORRECTO)
   const [open, setOpen] = useState(false);
   const [selectedMed, setSelectedMed] = useState<Medication | null>(null);
-
+  
   useEffect(() => {
     fetchMedications(residentId);
   }, [residentId]);
@@ -59,6 +62,12 @@ export default function MedicationsList({
       <h2 className="text-lg font-semibold text-white/80 mb-4 tracking-tight">
         Medicaciones
       </h2>
+
+      {error && ( //condicional para mostrar el error 
+        <Alert variant="destructive" className="mb-4">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
 
       <table className="w-full">
         {/* HEADER */}

@@ -36,6 +36,13 @@ export default function RegisterForm() {
         shadow-[0_0_40px_rgba(255,255,255,0.05)] shadow-black/20
         p-4
     ">
+      
+       <div className="mb-6 text-center">
+        <h1 className="text-3xl font-semibold text-white tracking-tighter">
+          Crear una cuenta
+        </h1>
+      </div>
+
     <form onSubmit={handleSubmit} className="mt-6 space-y-5 w-full p-4">
       <div>
         <label

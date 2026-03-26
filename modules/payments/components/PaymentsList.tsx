@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from "react";
 import { Payment } from "../types/payment.type";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 import {
   DropdownMenu,
@@ -28,7 +29,8 @@ type PaymentsListProps = {
   payments: Payment[]
   fetchPayments: (residentId: string) => void
   removePayment: (paymentId: string, residentId: string) => void
-  onEdit: (payment: Payment) => void 
+  onEdit: (payment: Payment) => void;
+  error: string | null; 
 }
 
 /**
@@ -45,14 +47,18 @@ export default function PaymentsList({
   payments,
   fetchPayments,
   removePayment,
-  onEdit, 
+  onEdit,
+  error, 
 }: PaymentsListProps) {
+
   const [open, setOpen] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
+   
+
 
   // Carga los pagos del residente cuando cambia el id.
   useEffect(() => {
-    fetchPayments(residentId);
+    fetchPayments(residentId)
   }, [residentId, fetchPayments]);
 
   return (
@@ -69,6 +75,12 @@ export default function PaymentsList({
       <h2 className="text-lg font-semibold text-white/80 mb-4 tracking-tight">
         Historial de Pagos
       </h2>
+
+          {error && (    // condicional para mostrar el error
+        <Alert variant="destructive" className="mb-4">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
 
       <table className="w-full">
         {/* HEADER */}
@@ -101,7 +113,7 @@ export default function PaymentsList({
                   ${payment.amount}
                 </td>
 
-                <td className="py-3text-white/60">{payment.payment_date}</td>
+                <td className="py-3 text-white/60">{payment.payment_date}</td>
 
                 {/* ACCIONES */}
                 <td className="py-3 text-right">

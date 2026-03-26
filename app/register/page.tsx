@@ -12,11 +12,11 @@ export default function RegisterPage() {
     ">
     <div className="w-full max-w-md" >
 
-      <div className="mb-6 text-center">
+     {/*} <div className="mb-6 text-center">
         <h1 className="text-3xl font-semibold text-white tracking-tighter">
-          Crear una cuenta
+       .   Crear una cuenta
         </h1>
-      </div>
+      </div> */}
 
         <RegisterForm />
 
