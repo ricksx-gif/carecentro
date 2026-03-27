@@ -1,84 +1,90 @@
-import { useState } from "react";
-import { Payment } from "../types/payment.type";
-import { handleError } from "@/utils/handleError";
+"use client"
+
+import { useEffect, useState } from "react"
+import { Payment } from "../types/payment.type"
+import { handleError } from "@/utils/handleError"
+import { toast } from "sonner"
+
 import {
   insertPayment,
   getPaymentsByResident,
   deletePayment,
   updatePayment as updatePaymentService,
-} from "../services/payments.service";
+} from "../services/payments.service"
 
-export function usePayments() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [payments, setPayments] = useState<Payment[]>([]);
+export function usePayments(residentId: string) {
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [payments, setPayments] = useState<Payment[]>([])
 
-  async function fetchPayments(residentId: string) {
+  async function fetchPayments() {
     try {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
-      const data = await getPaymentsByResident(residentId);
+      const data = await getPaymentsByResident(residentId)
 
-
-      setPayments(data || []);
+      setPayments(data || [])
     } catch (err: unknown) {
-      const parsedError = handleError(err);
-      setError(parsedError.message);
+      const parsedError = handleError(err)
+      setError(parsedError.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
-  async function createPayment(payment: Omit<Payment, "id" | "created_at">) {
+  useEffect(() => {
+    if (!residentId) return
+    fetchPayments()
+  }, [residentId])
+
+  async function createPayment(
+    payment: Omit<Payment, "id" | "created_at">
+  ) {
     try {
-      setLoading(true);
-      setError(null);
+      await insertPayment(payment)
 
-      await insertPayment(payment);
+      toast.success("Pago registrado")
 
-      await fetchPayments(payment.resident_id);
+      await fetchPayments()
     } catch (err: unknown) {
-      const parsedError = handleError(err);
-      setError(parsedError.message);
-    } finally {
-      setLoading(false);
+      const parsedError = handleError(err)
+      setError(parsedError.message)
+
+      toast.error(parsedError.message)
     }
   }
 
-  async function removePayment(paymentId: string, residentId: string) {
-    try {
-      setLoading(true);
-      setError(null);
-
-       await deletePayment(paymentId);
-
-      await fetchPayments(residentId);
-    } catch (err: unknown) {
-      const parsedError = handleError(err);
-      setError(parsedError.message);
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function updatePayment(
+  async function editPayment(
     paymentId: string,
-    residentId: string,
     payment: Partial<Payment>
   ) {
     try {
-      setLoading(true);
-      setError(null);
+      await updatePaymentService(paymentId, payment)
 
-      await updatePaymentService(paymentId, payment);
+      toast.success("Pago actualizado")
 
-      await fetchPayments(residentId);
+      await fetchPayments()
     } catch (err: unknown) {
-      const parsedError = handleError(err);
-      setError(parsedError.message);
-    } finally {
-      setLoading(false);
+      const parsedError = handleError(err)
+      setError(parsedError.message)
+
+      toast.error(parsedError.message)
+    }
+  }
+
+  async function deletePaymentHandler(payment: Payment) {
+    try {
+      await deletePayment(payment.id)
+
+      toast.success("Pago eliminado")
+
+      await fetchPayments()
+    } catch (err: unknown) {
+      const parsedError = handleError(err)
+      setError(parsedError.message)
+
+      toast.error(parsedError.message)
     }
   }
 
@@ -88,7 +94,7 @@ export function usePayments() {
     error,
     fetchPayments,
     createPayment,
-    removePayment,
-    updatePayment,
-  };
+    editPayment,
+    deletePayment: deletePaymentHandler,
+  }
 }

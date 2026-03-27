@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import { MoreHorizontal } from "lucide-react"
+import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -10,8 +10,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
-import { DropdownItem } from "@/shared/components/DropdownItem"
 
 import {
   Dialog,
@@ -21,43 +19,34 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog"
 
-import { Resident } from "../types/resident.type"
+import { DropdownItem } from "@/shared/components/DropdownItem"
+import { Medication } from "../types/medication.type"
 
 type GetColumnsProps = {
-  onEdit: (resident: Resident) => void
-  onDelete: (resident: Resident) => void
+  onEdit: (med: Medication) => void
+  onDelete: (med: Medication) => void
 }
 
 export const getColumns = ({
   onEdit,
   onDelete,
-}: GetColumnsProps): ColumnDef<Resident>[] => [
+}: GetColumnsProps): ColumnDef<Medication>[] => [
   {
     accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Nombre
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
+    header: "Medicamento",
   },
   {
-    accessorKey: "birth_date",
-    header: "Fecha de nacimiento",
-    cell: ({ row }) => {
-      const date = new Date(row.original.birth_date)
-      return date.toLocaleDateString()
-    },
+    accessorKey: "dose",
+    header: "Dosis",
+  },
+  {
+    accessorKey: "schedule",
+    header: "Frecuencia",
   },
   {
     id: "actions",
     cell: ({ row }) => {
-      const resident = row.original
+      const med = row.original
       const [open, setOpen] = useState(false)
 
       return (
@@ -77,7 +66,7 @@ export const getColumns = ({
                 align="end"
                 className="bg-black/60 backdrop-blur-xl border border-white/10 text-white"
               >
-                <DropdownItem onClick={() => onEdit(resident)}>
+                <DropdownItem onClick={() => onEdit(med)}>
                   Editar
                 </DropdownItem>
 
@@ -94,10 +83,10 @@ export const getColumns = ({
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="bg-black/60 backdrop-blur-xl border border-white/10 text-white shadow-2xl">
               <DialogHeader>
-                <DialogTitle>Eliminar residente</DialogTitle>
+                <DialogTitle>Eliminar medicación</DialogTitle>
                 <DialogDescription className="text-white/60">
-                  ¿Estás seguro de eliminar a{" "}
-                  <strong>{resident.name}</strong>? Esta acción no se puede deshacer.
+                  ¿Estás seguro de eliminar{" "}
+                  <strong>{med.name}</strong>? Esta acción no se puede deshacer.
                 </DialogDescription>
               </DialogHeader>
 
@@ -114,7 +103,7 @@ export const getColumns = ({
                   variant="destructive"
                   className="bg-red-500/80 hover:bg-red-500 text-white"
                   onClick={() => {
-                    onDelete(resident)
+                    onDelete(med)
                     setOpen(false)
                   }}
                 >

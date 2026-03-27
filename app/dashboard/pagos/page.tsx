@@ -1,9 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
+
 import PaymentForm from "@/modules/payments/components/PaymentForm"
-import PaymentsList from "@/modules/payments/components/PaymentsList"
+import PaymentsTable from "@/modules/payments/components/PaymentsTable"
 import { usePayments } from "@/modules/payments/hooks/usePayments"
+import { Payment } from "@/modules/payments/types/payment.type"
 
 import {
   Dialog,
@@ -12,25 +14,22 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
-import { Payment } from "@/modules/payments/types/payment.type"
-
 export default function PagosPage() {
   const residentId = "30402c06-1bdf-4d6c-b97a-a0d5a32cad19"
 
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null)
-
   const {
     payments,
+    loading,
+    error,
     fetchPayments,
     createPayment,
-    removePayment,
-    updatePayment,
-  } = usePayments()
+    editPayment,
+    deletePayment,
+  } = usePayments(residentId)
 
-  useEffect(() => {
-    fetchPayments(residentId)
-  }, [residentId])
+  const [isOpen, setIsOpen] = useState(false)
+  const [selectedPayment, setSelectedPayment] =
+    useState<Payment | null>(null)
 
   return (
     <div className="space-y-6">
@@ -47,7 +46,6 @@ export default function PagosPage() {
           </p>
         </div>
 
-        {/* BOTÓN */}
         <button
           onClick={() => {
             setSelectedPayment(null)
@@ -67,13 +65,7 @@ export default function PagosPage() {
 
       {/* MODAL */}
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent
-          className="
-            bg-black/60 backdrop-blur-xl
-            border border-white/10
-            text-white
-          "
-        >
+        <DialogContent className="bg-black/60 backdrop-blur-xl border border-white/10 text-white">
           <DialogHeader>
             <DialogTitle>
               {selectedPayment ? "Editar Pago" : "Registrar Pago"}
@@ -81,25 +73,26 @@ export default function PagosPage() {
           </DialogHeader>
 
           <PaymentForm
-             residentId={residentId}
-             createPayment={createPayment}
-             updatePayment={updatePayment}
-             paymentToEdit={selectedPayment}
-             onEditCancel={() => setIsOpen(false)}
+            residentId={residentId}
+            createPayment={createPayment}
+            updatePayment={editPayment}
+            paymentToEdit={selectedPayment}
+            onEditCancel={() => setSelectedPayment(null)}
           />
         </DialogContent>
       </Dialog>
 
-      {/* TABLA */}
-      <PaymentsList
-        residentId={residentId}
+      {/* TABLA NUEVA */}
+      <PaymentsTable
         payments={payments}
+        loading={loading}
+        error={error}
         fetchPayments={fetchPayments}
-        removePayment={removePayment}
         onEdit={(payment) => {
           setSelectedPayment(payment)
           setIsOpen(true)
         }}
+        onDelete={deletePayment}
       />
 
     </div>

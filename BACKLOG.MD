@@ -149,9 +149,9 @@ Descripción:
 Implementar manejo de errores en llamadas a la API y mostrar feedback al usuario.
 
 Criterios de aceptación:
-- [ ] Capturar errores en hooks
-- [ ] Mostrar mensajes de error en UI
-- [ ] Evitar fallos silenciosos
+- [x] Capturar errores en hooks
+- [x] Mostrar mensajes de error en UI
+- [x] Evitar fallos silenciosos
 
 ---
 
@@ -162,9 +162,9 @@ Descripción:
 Crear una vista para familiares con acceso limitado a información del residente.
 
 Criterios de aceptación:
-- [ ] Crear nueva vista
-- [ ] Restringir datos sensibles
-- [ ] Validar permisos
+- [x] Crear nueva vista
+- [x] Restringir datos sensibles
+- [x] Validar permisos
 
 ---
 
@@ -175,9 +175,9 @@ Descripción:
 Crear sistema de componentes compartidos para mejorar consistencia.
 
 Criterios de aceptación:
-- [ ] Crear carpeta shared/components
-- [ ] Unificar estilos
-- [ ] Reutilizar componentes existentes
+- [x] Crear carpeta shared/components
+- [x] Unificar estilos
+- [x] Reutilizar componentes existentes
 
 ---
 
