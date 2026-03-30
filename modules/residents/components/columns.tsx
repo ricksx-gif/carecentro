@@ -3,8 +3,9 @@
 import { useState } from "react"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-
 import { Button } from "@/components/ui/button"
+import { GenerateReportButton } from "@/shared/components/GenerateReportButton"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -63,6 +64,8 @@ export const getColumns = ({
       return (
         <>
           <div className="text-right">
+            <GenerateReportButton residentId={resident.id} />
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button

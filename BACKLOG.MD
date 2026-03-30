@@ -190,9 +190,9 @@ Descripción:
 Permitir generar reportes PDF de residentes.
 
 Criterios de aceptación:
-- [ ] Generar PDF desde datos reales
-- [ ] Diseño legible
-- [ ] Descarga funcional
+- [x] Generar PDF desde datos reales
+- [x] Diseño legible
+- [x] Descarga funcional
 
 ---
 

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { useResidents } from "../hooks/useResidents"
+import { GenerateAllResidentsReportButton } from "@/shared/components/GenerateAllResidentsReportButton"
 
 // Props del componente
 type ResidentsHeaderProps = {
@@ -29,9 +30,16 @@ export default function ResidentsHeader({ onAdd }: ResidentsHeaderProps) {
           Total de residentes registrados: {residents.length}
         </p>
       </div>
-      <Button className="bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-lg shadow-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]" onClick={onAdd}>
-        Añadir Residente
-      </Button>
+     <div className="flex items-center gap-2">
+       <GenerateAllResidentsReportButton />
+
+         <Button
+            className="bg-white/10 hover:bg-white/20 text-white border border-white/10 backdrop-blur-lg shadow-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+            onClick={onAdd}
+         >
+              Añadir Residente
+        </Button>
+      </div>
     </div>
   )
 }
