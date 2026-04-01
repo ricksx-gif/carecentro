@@ -203,9 +203,9 @@ Descripción:
 Agregar métricas avanzadas al dashboard.
 
 Criterios de aceptación:
-- [ ] Mostrar nuevas métricas
-- [ ] Integrar con datos existentes
-- [ ] Visualización clara
+- [x] Mostrar nuevas métricas
+- [x] Integrar con datos existentes
+- [x] Visualización clara
 
 ---
 
