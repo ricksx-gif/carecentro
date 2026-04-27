@@ -209,13 +209,14 @@ Criterios de aceptación:
 
 ---
 
-## TASK ID: SAAS-03
+## TASK ID: SAAS-03 (EN PROCESO)
 Título: Modelo de suscripciones
 
 Descripción:
 Diseñar sistema de planes para SaaS.
 
 Criterios de aceptación:
+- [x] Estructura base (types, service, hook)
 - [ ] Definir tipos de planes
 - [ ] Asociar funcionalidades a planes
 - [ ] Preparar base para pagos
@@ -276,7 +277,7 @@ Criterios de aceptación:
 
 ---
 
-## TASK ID: AUTO-03
+## TASK ID: AUTO-03 
 Título: Notificaciones internas
 
 Descripción:

@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog"
 
 export default function MedicacionesPage() {
-  const residentId = "30402c06-1bdf-4d6c-b97a-a0d5a32cad19"
+  const residentId = ""
 
   const {
     medications,
@@ -25,7 +25,7 @@ export default function MedicacionesPage() {
     createMedication,
     editMedication,
     deleteMedication,
-  } = useMedications(residentId)
+  } = useMedications({})
 
   const [isOpen, setIsOpen] = useState(false)
   const [selectedMedication, setSelectedMedication] =
@@ -41,7 +41,7 @@ export default function MedicacionesPage() {
           </h1>
 
           <p className="text-white/50 text-sm mt-1">
-            Gestionar las medicaciones del residente
+            Gestionar todas las medicaciones del sistema
           </p>
         </div>
 
@@ -68,7 +68,6 @@ export default function MedicacionesPage() {
           </DialogHeader>
 
           <MedicationForm
-            residentId={residentId}
             createMedication={createMedication}
             updateMedication={editMedication}
             medication={selectedMedication}

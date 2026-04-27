@@ -4,15 +4,22 @@ import { useEffect, useState } from "react"
 import { Payment } from "../types/payment.type"
 import { handleError } from "@/utils/handleError"
 import { toast } from "sonner"
+import { isResidentPending } from "@/modules/payments/utils/payment.utils"
+import { supabase } from "@/lib/supabase"
 
 import {
   insertPayment,
   getPaymentsByResident,
+  getAllPayments,
   deletePayment,
   updatePayment as updatePaymentService,
 } from "../services/payments.service"
 
-export function usePayments(residentId: string) {
+type UsePaymentsParams = {
+  residentId?: string
+  status?: string
+}
+export function usePayments({ residentId, status}: UsePaymentsParams) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [payments, setPayments] = useState<Payment[]>([])
@@ -21,10 +28,32 @@ export function usePayments(residentId: string) {
     try {
       setLoading(true)
       setError(null)
+      
+      let data: Payment[]= residentId
+        ? (await getPaymentsByResident(residentId)) || []
+        : (await getAllPayments()) || []
 
-      const data = await getPaymentsByResident(residentId)
+
+      // Filtro Inteligente
+      if (status === "pending") {
+        // traer residentes 
+      const { data: residents } = await supabase
+        .from("residents")
+        .select("id")
+      
+      const pendingResidentIds = (residents || [])
+        .filter((r) => isResidentPending(r, data || []))
+        .map((r) => r.id)
+
+        // filtrar pagos Solo de residentes pendientes 
+      data = (data || []).filter((p) =>
+        pendingResidentIds.includes(p.resident_id)
+    )
+  }
+
 
       setPayments(data || [])
+
     } catch (err: unknown) {
       const parsedError = handleError(err)
       setError(parsedError.message)
@@ -34,9 +63,8 @@ export function usePayments(residentId: string) {
   }
 
   useEffect(() => {
-    if (!residentId) return
     fetchPayments()
-  }, [residentId])
+  }, [residentId ?? null, status ?? null])
 
   async function createPayment(
     payment: Omit<Payment, "id" | "created_at">

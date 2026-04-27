@@ -11,7 +11,9 @@ type Props<T> = {
   error: string | null
   onRetry?: () => void
   emptyMessage?: string
+  filterColumn?: string
 }
+
 
 export function TableContainer<T>({
   data,
@@ -20,6 +22,7 @@ export function TableContainer<T>({
   error,
   onRetry,
   emptyMessage,
+  filterColumn,
 }: Props<T>) {
   if (loading) {
     return (
@@ -41,7 +44,11 @@ export function TableContainer<T>({
 
   return (
     <SectionCard>
-      <DataTable columns={columns} data={data} />
+      <DataTable 
+      columns={columns} 
+      data={data}
+      filterColumn={filterColumn}
+      />
     </SectionCard>
   )
 }

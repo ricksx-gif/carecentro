@@ -14,20 +14,25 @@ type InsertResident = Omit<Resident, "id">
  * @returns Los datos del residente insertado.
  * @throws Si ocurre un error durante la inserción.
  */
-export async function insertResidentTest(resident: {
+export async function insertResident(resident: {
   name: string
   birth_date: string
-}) {
+  registration_date: string
+},
+  centerId: string
+) {
+  
   const { data, error } = await supabase
     .from("residents")
     .insert([
       {
         name: resident.name,
         birth_date: resident.birth_date,
-        // TODO: Reemplazar por el ID del centro del usuario logueado.
-        center_id: "5508e12b-2a23-4621-a75b-bd62db2a8b21",
+        registration_date: resident.registration_date,
+        center_id: centerId,
       },
     ])
+    .select()
 
   if (error) {
     console.error("Error insertando residente:", error)
@@ -43,11 +48,15 @@ export async function insertResidentTest(resident: {
  * @param residentId - El ID del residente a eliminar.
  * @throws Si ocurre un error durante la eliminación.
  */
-export async function deleteResident(residentId: string) {
+export async function deleteResident(
+  residentId: string,
+  centerId: string
+) {
   const { error } = await supabase
     .from("residents")
     .delete()
     .eq("id", residentId)
+    .eq("ceneter_id", centerId)
 
   if (error) {
     console.error("Error eliminar residente:", error)
@@ -65,18 +74,19 @@ export async function deleteResident(residentId: string) {
  */
 export async function updateResident(
   residentId: string,
-  resident: {
-    name: string
-    birth_date: string
-  }
+  resident: Partial<InsertResident>,
+  centerId: string
+
 ) {
   const { data, error } = await supabase
     .from("residents")
     .update({
       name: resident.name,
       birth_date: resident.birth_date,
+      registration_date: resident.registration_date,
     })
     .eq("id", residentId)
+    .eq("center_id", centerId)
     .select()
 
   if (error) {
@@ -87,10 +97,11 @@ export async function updateResident(
   return data
 }
 
-export async function getResidents() {
+export async function getResidents(centerId: string) {
   const { data, error } = await supabase
     .from("residents")
-    .select("*")
+    .select("id, name, birth_date, registration_date")
+    .eq("center_id", centerId)
 
   if (error) {
     console.error("Error obteniendo residentes:", error)

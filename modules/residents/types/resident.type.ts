@@ -5,6 +5,7 @@ export type Resident = {
   id: string
   name: string
   birth_date: string
+  registration_date: string
   // TODO: añadir más campos si es necesario en el futuro
   // por ejemplo: room_number, status, etc.
 }

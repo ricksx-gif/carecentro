@@ -4,11 +4,20 @@ type Props = {
   title: string
   value: number | string
   growth?: number
+  onClick?: () => void
 }
 
-export function MetricCard({ title, value, growth }: Props) {
+export function MetricCard({ title, value, growth, onClick }: Props) {
   return (
-    <Card className="bg-white/5 backdrop-blur-lg border border-white/10 shadow-lg hover:shadow-[0_10px_40px_rgba(0,0,0,0.5)] hover:-translate-y-1 transition-all duration-300 hover:bg-white/10">
+    <Card 
+      onClick={onClick} 
+      className={`
+      bg-white/5 backdrop-blur-lg border border-white/10 shadow-lg
+      hover:shadow-[0_10px_40px_rgba(0,0,0,0.5)]
+      hover:-translate-y-1 transition-all duration-300 hover:bg-white/10
+     ${onClick ? "cursor-pointer" : ""}
+     `}
+      >
       <CardContent className="p-5 flex flex-col gap-1">
         
         {/* Title */}

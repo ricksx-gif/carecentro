@@ -1,5 +1,8 @@
 import { MetricCard } from "@/components/MetricCard"
 import { DashboardMetrics } from "@/modules/dashboard/types/dashboard.type"
+import { useRouter } from "next/navigation"
+
+
 
 type Props = {
   metrics: DashboardMetrics | null
@@ -9,6 +12,8 @@ type Props = {
 }
 
 const MetricsCards: React.FC<Props> = ({ metrics, loading, error }) => {
+
+  const router = useRouter()
   
   if (loading) return <div>Cargando métricas...</div>
   if (error) return <div>Error: {error}</div>
@@ -36,6 +41,7 @@ const MetricsCards: React.FC<Props> = ({ metrics, loading, error }) => {
       <MetricCard 
          title="Pagos Pendientes" 
          value={metrics.pendingPayments} 
+         onClick={() => router.push("/dashboard/pagos?status=pending")}
       />
 
 

@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase"
 import { DashboardMetrics } from "@/modules/dashboard/types/dashboard.type"
+import { isResidentPending } from "@/modules/payments/utils/payment.utils"
 
 export const getDashboardMetrics = async (): Promise<DashboardMetrics> => {
 
@@ -26,21 +27,13 @@ export const getDashboardMetrics = async (): Promise<DashboardMetrics> => {
   const totalRevenue =
     paymentsData?.reduce((acc, p) => acc + (p.amount || 0), 0) || 0
 
-  // 🔥 PENDIENTES REALES (por residente)
-  const pendingResidents = residents?.filter((resident) => {
-    const hasPaymentThisMonth = paymentsData?.some((p) => {
-      const date = new Date(p.payment_date)
-      return (
-        p.resident_id === resident.id &&
-        date.getMonth() === currentMonth &&
-        date.getFullYear() === currentYear
-      )
-    })
-
-    return !hasPaymentThisMonth
-  })
-
+  // 🔥 PENDIENTES REALES (por ciclo individual)
+  const pendingResidents = residents?.filter((resident) =>
+    isResidentPending(resident, paymentsData || []) 
+  )
+  
   const pendingPayments = pendingResidents?.length || 0
+
 
   // 📊 Agrupar por mes + año
   const monthlyMap: Record<string, { label: string; revenue: number }> = {}

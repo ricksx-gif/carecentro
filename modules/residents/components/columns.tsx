@@ -56,6 +56,15 @@ export const getColumns = ({
     },
   },
   {
+    accessorKey: "registration_date",
+    header: "Fecha de inscripción",
+    cell: ({ row }) => {
+      const date = new Date(row.original.registration_date)
+      return date.toLocaleDateString()
+    }
+  },
+  
+  {
     id: "actions",
     cell: ({ row }) => {
       const resident = row.original
@@ -63,7 +72,7 @@ export const getColumns = ({
 
       return (
         <>
-          <div className="text-right">
+          <div className="flex justify-end items-center gap-3 pr-2">
             <GenerateReportButton residentId={resident.id} />
 
             <DropdownMenu>

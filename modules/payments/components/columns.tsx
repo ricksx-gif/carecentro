@@ -3,6 +3,10 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { useState } from "react"
+import { generatePaymentsPDF } from "@/modules/payments/services/paymentsReport.service"
+import { toast } from "sonner"
+import { GenerateReportButtonBase } from "@/shared/components/GenerateReportButtonBase"
+
 
 import { Button } from "@/components/ui/button"
 import {
@@ -25,12 +29,22 @@ import { Payment } from "../types/payment.type"
 type GetColumnsProps = {
   onEdit: (payment: Payment) => void
   onDelete: (payment: Payment) => void
+  onExport: (payments: Payment) => void
 }
 
 export const getColumns = ({
   onEdit,
   onDelete,
+  onExport,
 }: GetColumnsProps): ColumnDef<Payment>[] => [
+  
+  {
+    accessorKey: "residents",
+    header: "Nombre",
+    cell: ({ row }) => {
+      return row.original.residents?.name || "Sin nombre"
+    },
+  },
   {
     accessorKey: "amount",
     header: "Monto",
@@ -48,10 +62,17 @@ export const getColumns = ({
     cell: ({ row }) => {
       const payment = row.original
       const [open, setOpen] = useState(false)
+  
 
       return (
         <>
-          <div className="text-right">
+          <div className="flex justify-end items-center gap-3 pr-2">
+            
+            <GenerateReportButtonBase 
+               onClick={() => onExport(payment)}
+                loading={false}
+                label="PDF"
+            />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button

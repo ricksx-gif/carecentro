@@ -4,15 +4,22 @@
 import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
+
+  const router = useRouter();
+
+  const [name, setName] = useState("");
+  const [centerName, setCenterName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const { signUp, loading, error } = useAuth();
+  const { registerOwner, loading, error } = useAuth();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
       toast.error("Las contraseñas no coinciden", {
         style: { 
@@ -24,131 +31,151 @@ export default function RegisterForm() {
       }) 
       return
     }
-    signUp({ email, password });
+      try {
+       await registerOwner({
+       email, 
+       password,
+       name,
+       centerName,
+     });
+
+     // REDIRECT AQUI
+     router.push("/dashboard")
+
+    }catch (err) {
+      console.error(err);
+    }
   };
 
   return (
-    <div className="
-        w-full max-w-md
-        rounded-2xl
-        bg-white/5 backdrop-blur-xl
-        border border-white/10
-        shadow-[0_0_40px_rgba(255,255,255,0.05)] shadow-black/20
-        p-4
-    ">
+  <div
+    className="
+    w-full max-w-md
+    rounded-3xl
+    bg-white/5 backdrop-blur-2xl
+    border border-white/10
+    shadow-[0_10px_50px_rgba(0,0,0,0.5)]
+    p-6
+  "
+  >
+    <div className="mb-6 text-center">
+      <h1 className="text-3xl font-semibold text-white tracking-tight">
+        Crear una cuenta
+      </h1>
+    </div>
+
+    <form onSubmit={handleSubmit} className="mt-6 space-y-6 w-full">
       
-       <div className="mb-6 text-center">
-        <h1 className="text-3xl font-semibold text-white tracking-tighter">
-          Crear una cuenta
-        </h1>
+      {/* Nombre */}
+      <div className="space-y-2">
+        <label className="text-white/60 text-sm">
+          Nombre completo
+        </label>
+        <input
+          type="text"
+          required
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="w-full rounded-xl px-3 py-2.5
+          bg-white/5 border border-white/10
+          text-white
+          focus:ring-2 focus:ring-white/20
+          outline-none transition-all"
+        />
       </div>
 
-    <form onSubmit={handleSubmit} className="mt-6 space-y-5 w-full p-4">
-      <div>
-        <label
-          htmlFor="email"
-          className="text-white/60 text-sm mb-1 block"
-        >
+      {/* Centro */}
+      <div className="space-y-2">
+        <label className="text-white/60 text-sm">
+          Nombre del centro
+        </label>
+        <input
+          type="text"
+          required
+          value={centerName}
+          onChange={(e) => setCenterName(e.target.value)}
+          className="w-full rounded-xl px-3 py-2.5
+          bg-white/5 border border-white/10
+          text-white
+          focus:ring-2 focus:ring-white/20
+          outline-none transition-all"
+        />
+      </div>
+
+      {/* Email */}
+      <div className="space-y-2">
+        <label className="text-white/60 text-sm">
           Correo Electrónico
         </label>
-        <div className="mt-2">
-          <input
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-lg px-3 py-2
-             bg-white/5 border border-white/10
-             text-white placeholder:text-white/40
-             backdrop-blur-lg
-             focus:outline-none focus:ring-1
-             focus:border-white/20 focus:bg-white/10
-             transition-all"
-          />
-        </div>
+        <input
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full rounded-xl px-3 py-2.5
+          bg-white/5 border border-white/10
+          text-white
+          focus:ring-2 focus:ring-white/20
+          outline-none transition-all"
+        />
       </div>
 
-      <div>
-        <label
-          htmlFor="password"
-          className="text-sm text-white/60 mb-1 block"
-        >
+      {/* Password */}
+      <div className="space-y-2">
+        <label className="text-white/60 text-sm">
           Contraseña
         </label>
-        <div className="mt-2">
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="new-password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-lg px-3 py-2
-             bg-white/5 border border-white/10
-             text-white placeholder:text-white/40
-             backdrop-blur-lg
-             focus:outline-none focus:ring-1
-             focus:border-white/20 focus:bg-white/10
-             transition-all"
-          />
-        </div>
+        <input
+          type="password"
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full rounded-xl px-3 py-2.5
+          bg-white/5 border border-white/10
+          text-white
+          focus:ring-2 focus:ring-white/20
+          outline-none transition-all"
+        />
       </div>
 
-      <div>
-        <label
-          htmlFor="confirm-password"
-          className="text-sm text-white/60 mb-1 block"
-        >
-          Confirmar Contraseña
+      {/* Confirm Password */}
+      <div className="space-y-2">
+        <label className="text-white/60 text-sm">
+          Confirmar contraseña
         </label>
-        <div className="mt-2">
-          <input
-            id="confirm-password"
-            name="confirm-password"
-            type="password"
-            autoComplete="new-password"
-            required
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full rounded-lg px-3 py-2
-             bg-white/5 border border-white/10
-             text-white placeholder:text-white/40
-             backdrop-blur-lg
-             focus:outline-none focus:ring-1
-             focus:border-white/20 focus:bg-white/10
-             transition-all"
-          />
-        </div>
+        <input
+          type="password"
+          required
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          className="w-full rounded-xl px-3 py-2.5
+          bg-white/5 border border-white/10
+          text-white
+          focus:ring-2 focus:ring-white/20
+          outline-none transition-all"
+        />
       </div>
 
+      {/* Error */}
       {error && (
-        <div className="text-sm text-red-600">
-          <p>{error}</p>
+        <div className="text-sm text-red-500">
+          {error}
         </div>
       )}
 
-      <div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full mt-6
-           py-2 rounded-lg
-           bg-white/10
-           text-white font-medium
-           border border-white/10
-           hover:bg-white/20
-           hover:scale-[1.02]
-           active:scale-[0.99]
-           transition-all"
-        >
-          {loading ? "Creando cuenta..." : "Crear cuenta"}
-        </button>
-      </div>
+      {/* Botón */}
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full mt-4
+        py-2.5 rounded-xl
+        bg-white text-black font-semibold
+        hover:bg-white/90
+        transition-all"
+      >
+        {loading ? "Creando cuenta..." : "Crear cuenta"}
+      </button>
     </form>
-    </div>
-  );
+  </div>
+);
 }

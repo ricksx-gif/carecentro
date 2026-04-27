@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from "react"
 import {
-  insertResidentTest,
+  insertResident,
   updateResident,
 } from "../services/residents.service"
+
 import { Resident } from "../types/resident.type"
 import { LoadingSpinner } from "@/shared/components/LoadingSpinner" // 🔥 NUEVO
 import { toast } from "sonner" 
@@ -22,6 +23,8 @@ export default function ResidentForm({
   const [name, setName] = useState("")
   const [birthDate, setBirthDate] = useState("")
 
+  const [registrationDate, setRegistrationDate] = useState("")
+
   // 🔥 NUEVO: estado de loading
   const [loading, setLoading] = useState(false)
 
@@ -29,16 +32,18 @@ export default function ResidentForm({
     if (resident) {
       setName(resident.name)
       setBirthDate(resident.birth_date)
+      setRegistrationDate(resident.registration_date || "")
     } else {
       setName("")
       setBirthDate("")
+      setRegistrationDate(new Date().toISOString().split("T")[0])
     }
   }, [resident])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
 
-    if (!name || !birthDate) {
+    if (!name || !birthDate || !registrationDate) {
       toast.error("Todos los campos son obligatorios", {
         style: { 
            background: "rgba(0,0,0,0.8)",
@@ -58,11 +63,13 @@ export default function ResidentForm({
         await updateResident(resident.id, {
           name,
           birth_date: birthDate,
+          registration_date: registrationDate,
         })
       } else {
-        await insertResidentTest({
+        await insertResident({
           name,
           birth_date: birthDate,
+          registration_date: registrationDate,
         })
       }
 
@@ -124,6 +131,28 @@ export default function ResidentForm({
       />
     </div>
 
+    {/* FECHA DE  INSCRIPCIÓN*/}
+    <div>
+      <label className="block text-sm font-medium text-white/60 mb-1">
+        Fecha de inscripción
+      </label>
+
+      <input
+      type="date"
+        value={registrationDate}
+        onChange={(e) => setRegistrationDate(e.target.value)}
+        disabled={loading}
+        className="
+          w-full rounded-lg px-3 py-2
+          bg-white/5 border border-white/10
+          text-white
+          backdrop-blur-lg
+          focus:outline-none focus:ring-0
+          focus:border-white/20 focus:bg-white/10
+          transition-all
+        "
+      />
+    </div>
     {/* BOTONES */}
     <div className="flex justify-end gap-3 pt-4">
 

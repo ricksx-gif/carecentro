@@ -5,7 +5,14 @@
 import { useState, useEffect } from "react";
 import { Payment } from "../types/payment.type";
 import { toast } from "sonner";
-
+import { useResidents } from "@/modules/residents/hooks/useResidents"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
 type PaymentFormProps = {
   residentId: string;
@@ -35,9 +42,13 @@ export default function PaymentForm({
   updatePayment,
   onEditCancel,
 }: PaymentFormProps) {
+  const { residents } = useResidents()
+  const [selectedResident, setSelectedResident] = useState(residentId || "")
+
   const [amount, setAmount] = useState("");
   const [paymentDate, setPaymentDate] = useState("");
   const isEditMode = !!paymentToEdit && !!updatePayment;
+
 
   useEffect(() => {
     if (isEditMode) {
@@ -54,7 +65,7 @@ export default function PaymentForm({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!amount || !paymentDate) {
+    if ( !selectedResident|| !amount || !paymentDate) {
       toast.error("Todos los campos son obligatorios", {
         style: { 
            background: "rgba(0,0,0,0.8)",
@@ -76,7 +87,7 @@ export default function PaymentForm({
         await updatePayment(paymentToEdit.id, paymentData);
         onEditCancel?.();
       } else {
-        await createPayment({ ...paymentData, resident_id: residentId });
+        await createPayment({ ...paymentData, resident_id: selectedResident });
       }
     } catch (error) {
       console.error(error);
@@ -98,6 +109,53 @@ export default function PaymentForm({
         <h2 className="text-lg font-semibold text-white/80 mb-2">
           {isEditMode ? "Editar Pago" : "Registrar Nuevo Pago"}
         </h2>
+        <div>
+          <label className="text-sm text-white/60 mb-1 block">
+           Residente
+          </label>
+
+          <Select
+            value={selectedResident}
+            onValueChange={setSelectedResident}
+          >
+            <SelectTrigger 
+            className="
+              w-full 
+              bg-white/5 
+              border border-white/10 
+              text-white 
+              backdrop-blur-lg
+              focus:ring-0
+              focus:outline-none
+              focus:border-white/30
+            ">
+             <SelectValue 
+                placeholder={
+                  <span className="text-white/60">
+                      Selecciona un residente
+                  </span>
+                } 
+              />
+            </SelectTrigger>
+            
+            <SelectContent className="bg-black/90 border border-white/10 backdrop-blur-xl">
+              {residents.map((r) => (
+              <SelectItem 
+              key={r.id} 
+              value={r.id} 
+              className="
+              text-white
+              focus:bg-white/10
+              focus:text-white
+              data-[state=checked]:bg-white/10
+              data-[state=checked
+              ">
+                {r.name} 
+              </SelectItem>
+            ))}
+          </SelectContent>
+          </Select>
+        </div>
         <div>
           <label className="text-sm text-white/60 mb-1 block">Monto</label>
           <input

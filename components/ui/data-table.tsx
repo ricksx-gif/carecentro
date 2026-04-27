@@ -30,11 +30,13 @@ import { DataTablePagination } from "./data-table-pagination"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  filterColumn?: string
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  filterColumn = "name", 
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
@@ -65,16 +67,16 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
+  
+  const column = table.getAllColumns().find(col => col.id === filterColumn)
 
   return (
     <div className="space-y-4">
       <div className="flex items-center">
         <Input
-          placeholder="Filtrar por nombre..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
+          placeholder="Filtrar..."
+          value={(column?.getFilterValue() as string) ?? ""}
+          onChange={(event) => column?.setFilterValue(event.target.value)}
           className="w-80 bg-white/5 border border-white/10 text-white placeholder:text-white/40 backdrop-blur-lg focus:border-white/20 focus:bg-white/10 transition-all"
         />
       </div>

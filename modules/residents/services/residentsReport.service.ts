@@ -53,7 +53,8 @@ export function generateResidentsReport(residents: Resident[]) {
   doc.setTextColor(26, 110, 203);
 
   doc.text("Nombre", margin, y);
-  doc.text("Fecha de nacimiento", pageWidth - margin, y, { align: "right" });
+  doc.text("F. nacimiento", pageWidth / 2, y, { align: "center" });
+  doc.text("F. inscripción", pageWidth - margin, y, { align: "right"});
 
   y += 5;
 
@@ -83,8 +84,13 @@ export function generateResidentsReport(residents: Resident[]) {
 
       const birthDate = new Date(resident.birth_date).toLocaleDateString();
 
+      const registrationDate = resident.registration_date
+        ? new Date(resident.registration_date).toLocaleDateString()
+        : "";
+
       doc.text(resident.name, margin, y);
-      doc.text(birthDate, pageWidth - margin, y, { align: "right" });
+      doc.text(birthDate, pageWidth / 2, y, { align: "center" });
+      doc.text(registrationDate, pageWidth - margin, y, { align: "right" });
 
       y += 6;
     });

@@ -8,11 +8,16 @@ import { toast } from "sonner"
 import {
   insertMedication,
   getMedicationsByResident,
+  getAllMedications,
   deleteMedication,
   updateMedication,
 } from "../services/medications.service"
 
-export function useMedications(residentId: string) {
+type UseMedicationsParams = {
+  residentId?: string
+}
+
+export function useMedications({ residentId }: UseMedicationsParams) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [medications, setMedications] = useState<Medication[]>([])
@@ -22,9 +27,11 @@ export function useMedications(residentId: string) {
       setLoading(true)
       setError(null)
 
-      const data = await getMedicationsByResident(residentId)
+      const data: Medication[] = residentId
+        ? (await getMedicationsByResident(residentId)) || []
+        : (await getAllMedications()) || []
 
-      setMedications(data || [])
+      setMedications(data)
     } catch (err: unknown) {
       const parsedError = handleError(err)
       setError(parsedError.message)
@@ -34,23 +41,19 @@ export function useMedications(residentId: string) {
   }
 
   useEffect(() => {
-    if (!residentId) return
     fetchMedications()
-  }, [residentId])
+  }, [residentId ?? null])
 
   async function createMedication(
     medication: Omit<Medication, "id" | "created_at">
   ) {
     try {
       await insertMedication(medication)
-
       toast.success("Medicación agregada")
-
       await fetchMedications()
     } catch (err: unknown) {
       const parsedError = handleError(err)
       setError(parsedError.message)
-
       toast.error(parsedError.message)
     }
   }
@@ -61,14 +64,11 @@ export function useMedications(residentId: string) {
   ) {
     try {
       await updateMedication(medicationId, medication)
-
       toast.success("Medicación actualizada")
-
       await fetchMedications()
     } catch (err: unknown) {
       const parsedError = handleError(err)
       setError(parsedError.message)
-
       toast.error(parsedError.message)
     }
   }
@@ -76,14 +76,11 @@ export function useMedications(residentId: string) {
   async function deleteMedicationHandler(med: Medication) {
     try {
       await deleteMedication(med.id)
-
       toast.success("Medicación eliminada")
-
       await fetchMedications()
     } catch (err: unknown) {
       const parsedError = handleError(err)
       setError(parsedError.message)
-
       toast.error(parsedError.message)
     }
   }

@@ -36,6 +36,21 @@ export const getColumns = ({
     header: "Medicamento",
   },
   {
+  id: "resident",
+  header: "Residente",
+  cell: ({ row }) => {
+    const med = row.original
+
+    return (
+      <div className="flex flex-col">
+        <span className="text-white/90 font-medium">
+          {med.resident?.name ?? "—"}
+        </span>
+      </div>
+    )
+  },
+  },
+  {
     accessorKey: "dose",
     header: "Dosis",
   },

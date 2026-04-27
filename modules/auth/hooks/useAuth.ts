@@ -5,11 +5,17 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { signInWithPassword, signUp as signUpService } from '../services/auth.service';
 import { Credentials } from '../types';
+import * as authService from '../services/auth.service';
+import { RegisterOwnerData } from '../types';
 
 export const useAuth = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const registerOwner = async (data: RegisterOwnerData) => {
+  return authService.registerOwner(data);
+};
 
   const login = async (credentials: Credentials) => {
     setLoading(true);
@@ -42,5 +48,11 @@ export const useAuth = () => {
     }
   };
 
-  return { login, signUp, loading, error };
+  return {
+  login,
+  signUp,
+  registerOwner, // 👈 AGREGA ESTO
+  loading,
+  error,
+};
 };

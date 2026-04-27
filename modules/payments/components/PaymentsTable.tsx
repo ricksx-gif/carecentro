@@ -11,6 +11,7 @@ type Props = {
   fetchPayments: () => void
   onEdit: (payment: Payment) => void
   onDelete: (payment: Payment) => void
+  onExport: (payments: Payment) => void
 }
 
 export default function PaymentsTable({
@@ -20,8 +21,9 @@ export default function PaymentsTable({
   fetchPayments,
   onEdit,
   onDelete,
+  onExport,
 }: Props) {
-  const columns = getColumns({ onEdit, onDelete })
+  const columns = getColumns({ onEdit, onDelete, onExport,})
 
   return (
     <TableContainer
@@ -30,7 +32,7 @@ export default function PaymentsTable({
       loading={loading}
       error={error}
       onRetry={fetchPayments}
-      emptyMessage="No hay pagos registrados"
+      emptyMessage="No hay pagos registrados" 
     />
   )
 }
